@@ -5,6 +5,7 @@
 
 rf_context rf_ctx;
 rf_renderer_memory_buffers rf_mem;
+rf_default_font_buffers default_font_buffers;
 
 const int screen_width = 800;
 const int screen_height = 450;
@@ -14,14 +15,16 @@ float g_player_jump_speed = 350.0f;
 float g_player_hor_speed = 200.0f;
 
 typedef struct s_player s_player;
-struct s_player {
+struct s_player
+{
     rf_vec2 position;
     float speed;
     bool can_jump;
 };
 
 typedef struct s_env_item s_env_item;
-struct s_env_item {
+struct s_env_item
+{
     rf_rec rect;
     int blocking;
     rf_color color;
@@ -43,6 +46,7 @@ struct s_env_item env_items[] = {
     {{ 250, 300, 100, 10 }, 1, RF_GRAY },
     {{ 650, 300, 100, 10 }, 1, RF_GRAY }
 };
+
 int env_items_length = sizeof(s_env_item) / sizeof(env_items[0]);
 rf_camera2d camera = { 0 };
 
@@ -74,7 +78,7 @@ void on_init(void)
     //Initialise rayfork and load the default font
     rf_init(&rf_ctx, &rf_mem, screen_width, screen_height, RF_DEFAULT_OPENGL_PROCS);
     rf_set_target_fps(60);
-    rf_load_default_font(RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR);
+    rf_load_default_font(&default_font_buffers);
 
     player.position = (rf_vec2){ 400, 280 };
     player.speed = 0;
@@ -85,8 +89,6 @@ void on_init(void)
     camera.rotation = 0.0f;
     camera.zoom = 1.0f;
 }
-
-
 
 void on_frame(const input_data input)
 {
@@ -175,13 +177,13 @@ void update_player(const input_data input, s_player *player, s_env_item *envItem
     else player->can_jump = true;
 }
 
-void update_camera_center(rf_camera2d *camera, s_player *player, s_env_item *envItems, int env_items_length, float delta, int width, int height)
+void update_camera_center(rf_camera2d* camera, s_player* player, s_env_item* envItems, int env_items_length, float delta, int width, int height)
 {
     camera->offset = (rf_vec2){ width / 2, height / 2 };
     camera->target = player->position;
 }
 
-void update_camera_center_inside_map(rf_camera2d *camera, s_player *player, s_env_item *envItems, int env_items_length, float delta, int width, int height)
+void update_camera_center_inside_map(rf_camera2d* camera, s_player* player, s_env_item* envItems, int env_items_length, float delta, int width, int height)
 {
     camera->target = player->position;
     camera->offset = (rf_vec2){ width / 2, height / 2 };
