@@ -1,4 +1,4 @@
-//In this file we only initialise the window using sokol_app
+// In this file we only initialise the window using sokol_app
 
 #define SOKOL_IMPL
 #define SOKOL_GLCORE33
