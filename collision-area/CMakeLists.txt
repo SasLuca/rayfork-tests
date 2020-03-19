@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.15)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(collision_area
+add_executable(collision-area
         main.c
         game.c
         ../dependencies/glad/glad.c)
 
-target_link_libraries(collision_area PRIVATE rayfork)
+target_link_libraries(collision-area PRIVATE rayfork)

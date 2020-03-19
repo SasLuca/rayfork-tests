@@ -7,6 +7,7 @@
 
 rf_context rf_ctx;
 rf_renderer_memory_buffers rf_mem;
+rf_default_font_buffers default_font_buffers;
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 450
@@ -15,23 +16,23 @@ float mouse_x;
 float mouse_y;
 
 // Box A: Moving box
-rf_rec box_a = {10, (float) SCREEN_HEIGHT / 2 - 50, 200, 100 };
+rf_rec box_a = { 10, (float) SCREEN_HEIGHT / 2 - 50, 200, 100 };
 int box_a_speed_x = 4;
 
 // Box B: Mouse moved box
-rf_rec box_b = {(float) SCREEN_WIDTH / 2 - 30, (float) SCREEN_HEIGHT / 2 - 30, 60, 60 };
+rf_rec box_b = { (float) SCREEN_WIDTH / 2 - 30, (float) SCREEN_HEIGHT / 2 - 30, 60, 60 };
 
 // Collision rectangle
-rf_rec box_collision = {0 };
+rf_rec box_collision;
 
 // Top menu limits
 const int screen_upper_limit = 40;
 
 // Movement pause
-bool pause = false;
+bool pause;
 
 // Collision detection
-bool collision = false;
+bool collision;
 
 void on_init(void)
 {
@@ -40,7 +41,7 @@ void on_init(void)
 
     //Initialise rayfork and load the default font
     rf_init(&rf_ctx, &rf_mem, SCREEN_WIDTH, SCREEN_HEIGHT, RF_DEFAULT_OPENGL_PROCS);
-    rf_load_default_font(RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR);
+    rf_load_default_font(&default_font_buffers);
     rf_set_target_fps(60);
 }
 
