@@ -13,7 +13,7 @@ set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 
 add_subdirectory(dependencies/glfw EXCLUDE_FROM_ALL)
 
-add_subdirectory(basic_window)
+add_subdirectory(basic-window)
 add_subdirectory(basic_shapes)
 add_subdirectory(input_keys)
 add_subdirectory(collision_area)
