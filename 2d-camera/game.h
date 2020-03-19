@@ -8,6 +8,8 @@ struct input_data
     int left_pressed;
     int right_pressed;
     int r_pressed;
+    int a_pressed;
+    int s_pressed;
 };
 
 void on_init(void);

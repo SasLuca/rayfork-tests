@@ -7,25 +7,22 @@
 
 rf_context rf_ctx;
 rf_renderer_memory_buffers rf_mem;
+rf_default_font_buffers default_font_mem;
 
-const int screen_width = 800;
+const int screen_width  = 800;
 const int screen_height = 450;
-
 const int max_buildings = 100;
 
-rf_rec buildings[100] = { 0 };
-rf_color buildColors[100] = { 0 };
+rf_rec   buildings[100];
+rf_color buildColors[100];
 
 rf_rec player = { 400, 280, 40, 40 };
 
 int spacing = 0;
 
-rf_camera2d camera = { 0 };
+rf_camera2d camera;
 
-int get_random_value(int min, int max)
-{
-    return rand() % (max - min) + min;
-}
+int get_random_value(int min, int max) { return rand() % (max - min) + min; }
 
 void on_init(void)
 {
@@ -35,13 +32,13 @@ void on_init(void)
     //Initialise rayfork and load the default font
     rf_init(&rf_ctx, &rf_mem, screen_width, screen_height, RF_DEFAULT_OPENGL_PROCS);
     rf_set_target_fps(60);
-    rf_load_default_font(RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR);
+    rf_load_default_font(&default_font_mem);
 
     //Seed the rand() function
     srand(time(NULL));
 
-    camera.target = (rf_vec2){ player.x + 20, player.y + 20 };
-    camera.offset = (rf_vec2){ screen_width/2, screen_height/2 };
+    camera.target = (rf_vec2) { player.x + 20, player.y + 20 };
+    camera.offset = (rf_vec2) { screen_width/2, screen_height/2 };
     camera.rotation = 0.0f;
     camera.zoom = 1.0f;
 
@@ -54,13 +51,9 @@ void on_init(void)
 
         spacing += buildings[i].width;
 
-        buildColors[i] = (rf_color){ get_random_value(200, 240), get_random_value(200, 240), get_random_value(200, 250), 255 };
+        buildColors[i] = (rf_color) { get_random_value(200, 240), get_random_value(200, 240), get_random_value(200, 250), 255 };
     }
-
-
 }
-
-
 
 void on_frame(const input_data input)
 {
