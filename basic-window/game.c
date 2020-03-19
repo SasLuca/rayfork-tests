@@ -6,6 +6,7 @@
 
 rf_context rf_ctx;
 rf_renderer_memory_buffers rf_mem;
+rf_default_font_buffers  rf_default_font_buf;
 
 int screen_width  = 800;
 int screen_height = 450;
@@ -17,7 +18,7 @@ void on_init(void)
 
     //Initialise rayfork and load the default font
     rf_init(&rf_ctx, &rf_mem, screen_width, screen_height, RF_DEFAULT_OPENGL_PROCS);
-    rf_load_default_font(RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR);
+    rf_load_default_font(&rf_default_font_buf);
 }
 
 void on_frame(void)
@@ -30,7 +31,7 @@ void on_frame(void)
         const rf_sizef size   = rf_measure_text(rf_get_default_font(), text, strlen(text), 20, 1);
         const rf_vec2 pos     = (rf_vec2) { screen_width / 2 - size.width / 2, screen_height / 2 - size.height / 2 }; // Center the text
 
-        rf_draw_text(text, pos.x, pos.y, 20, RF_LIGHTGRAY);
+        rf_draw_text(text, pos.x, pos.y, 20, RF_BLACK);
     }
     rf_end();
 }

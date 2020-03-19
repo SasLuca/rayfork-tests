@@ -29,7 +29,7 @@ int wave_length;
 rf_vec2 position;
 bool is_left_button_down;
 
-// With rayfork_audio the context struct must be in the same translation unit as the rayfork_audio implementation.
+// With rayfork-audio the context struct must be in the same translation unit as the rayfork-audio implementation.
 // This is done in order to only include miniaudio (which is very big) in the translation unit with the implementation.
 rf_audio_context global_audio_ctx;
 
