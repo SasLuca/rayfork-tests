@@ -3,16 +3,21 @@ project(rayfork_examples C)
 
 set(CMAKE_C_STANDARD 99)
 
+# Set EXAMPLES_ASSETS_PATH
+add_compile_definitions(EXAMPLES_ASSETS_PATH="../../../rayfork-examples/")
+
+# Include dependencies
 include_directories(dependencies/)
 include_directories(dependencies/sokol)
 include_directories(dependencies/glad)
 
+# Setup GLFW
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-
 add_subdirectory(dependencies/glfw EXCLUDE_FROM_ALL)
 
+# Include all examples
 add_subdirectory(basic-window)
 add_subdirectory(basic-shapes)
 add_subdirectory(input_keys)

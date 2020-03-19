@@ -6,23 +6,25 @@
 #include "stdlib.h"
 #include "stdio.h"
 
-#define MAX_BUNNIES 50000  // 50K bunnies limit
+#define MAX_BUNNIES (50000)  // 50K bunnies limit
 
 // This is the maximum amount of elements (quads) per batch
 // NOTE: This value is defined in [rlgl] module and can be changed there
-typedef struct bunny bunny;
-struct bunny
+typedef struct bunny_t bunny_t;
+struct bunny_t
 {
     rf_vec2  position;
     rf_vec2  speed;
     rf_color color;
 };
 
-rf_context   rf_ctx;
-rf_renderer_memory_buffers    rf_mem;
-rf_texture2d bunny_texture;
-bunny*       bunnies;
-int          bunnies_count;
+rf_context                 rf_ctx;
+rf_renderer_memory_buffers rf_mem;
+rf_default_font_buffers    default_font_mem;
+
+rf_texture2d               bunny_texture;
+bunny_t*                   bunnies;
+int                        bunnies_count;
 
 int random_value_in_range(int min, int max)
 {
@@ -43,11 +45,11 @@ void on_init(void)
 
     //Initialise rayfork and load the default font
     rf_init(&rf_ctx, &rf_mem, SCREEN_WIDTH, SCREEN_HEIGHT, RF_DEFAULT_OPENGL_PROCS);
-    rf_load_default_font(RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR);
+    rf_load_default_font(&default_font_mem);
 
-    bunny_texture = rf_load_texture_from_file("../../../examples/assets/wabbit_alpha.png", RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO);
+    bunny_texture = rf_load_texture_from_file(EXAMPLES_ASSETS_PATH "assets/wabbit_alpha.png", RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO);
 
-    bunnies = (bunny*) malloc(MAX_BUNNIES * sizeof(bunny)); // Bunnies array
+    bunnies = (bunny_t*) malloc(MAX_BUNNIES * sizeof(bunny_t)); // Bunnies array
 }
 
 void on_frame(const input_data input)
