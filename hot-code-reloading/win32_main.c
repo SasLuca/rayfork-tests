@@ -8,13 +8,13 @@
 #include "game.h"
 
 //Functions we call from the dll
-typedef void (*game_init_func_t)(game_data* game_data);
-typedef void (*game_refresh_func_t)(game_data* game_data);
+typedef void (*game_init_func_t)(game_data_t* game_data);
+typedef void (*game_refresh_func_t)(game_data_t* game_data);
 typedef void (*game_update_func_t)(void);
 
 //Stubs for when we the dll functions are not loaded
-void game_init_stub(game_data* it) {}
-void game_refresh_stub(game_data* it) {}
+void game_init_stub(game_data_t* it) {}
+void game_refresh_stub(game_data_t* it) {}
 void game_update_stub(void) {}
 
 typedef struct win32_game_code win32_game_code;
@@ -26,48 +26,48 @@ struct win32_game_code
     game_refresh_func_t game_refresh;
     game_update_func_t game_update;
 
-    bool is_valid;
+    bool valid;
 };
 
 win32_game_code game_code;
-game_data game;
+game_data_t game;
 
-win32_game_code win32_load_game_code(const char* source_dll_name, const char* temp_dll_name)
+win32_game_code win32_load_game_code()
 {
     win32_game_code result = {0};
 
-    assert(CopyFile(source_dll_name, temp_dll_name, FALSE));
+    assert(CopyFile("./libhot-code-reloading-dynamic.dll", "game.dll", FALSE));
 
-    result.game_code_dll = LoadLibraryA(temp_dll_name);
+    result.game_code_dll = LoadLibraryA("game.dll");
     assert(result.game_code_dll);
     result.game_init = (game_init_func_t) GetProcAddress(result.game_code_dll, "game_init");
     result.game_update = (game_update_func_t) GetProcAddress(result.game_code_dll, "game_update");
     result.game_refresh = (game_refresh_func_t) GetProcAddress(result.game_code_dll, "game_refresh");
     assert(result.game_init && result.game_update && result.game_refresh);
 
-    result.is_valid = true;
+    result.valid = true;
 
     return result;
 }
 
-void win32_unload_game_code(win32_game_code* game_code)
+void win32_unload_game_code()
 {
-    if (game_code->game_code_dll)
+    if (game_code.game_code_dll)
     {
-        FreeLibrary(game_code->game_code_dll);
-        game_code->game_code_dll = NULL;
+        FreeLibrary(game_code.game_code_dll);
+        game_code.game_code_dll = NULL;
     }
 
-    game_code->is_valid = false;
-    game_code->game_init = game_init_stub;
-    game_code->game_update = game_update_stub;
-    game_code->game_refresh = game_refresh_stub;
+    game_code.valid = false;
+    game_code.game_init = game_init_stub;
+    game_code.game_update = game_update_stub;
+    game_code.game_refresh = game_refresh_stub;
 }
 
 void on_init(void)
 {
-    game_code = win32_load_game_code("./libhot_code_reloading_dynamic.dll", "./hot_code_reloading_temp.dll");
-    assert(game_code.is_valid);
+    game_code = win32_load_game_code();
+    assert(game_code.valid);
     game.alloc = malloc;
     game.free = free;
     game.screen_width = 800;
@@ -77,7 +77,7 @@ void on_init(void)
 
 void on_frame(void)
 {
-    if (game_code.is_valid)
+    if (game_code.valid)
     {
         game_code.game_update();
     }
@@ -88,9 +88,9 @@ void on_event(const sapp_event* event)
     // When the user presses R we try to hot reload the code.
     if (event->type == SAPP_EVENTTYPE_KEY_DOWN && event->key_code == SAPP_KEYCODE_R)
     {
-        win32_unload_game_code(&game_code);
+        win32_unload_game_code();
 
-        game_code = win32_load_game_code("./libhot_code_reloading_dynamic.dll", "./hot_code_reloading_temp.dll");
+        game_code = win32_load_game_code();
         game_code.game_refresh(&game);
     }
 }
