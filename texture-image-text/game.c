@@ -5,10 +5,9 @@
 #include "glad.h"
 
 rf_context   rf_ctx;
-rf_renderer_memory_buffers    rf_mem;
+rf_renderer_memory_buffers rf_mem;
 rf_default_font_buffers    default_font_buffers;
 
-rf_image parrots;
 rf_font font;
 rf_texture2d texture;
 rf_vec2 position;
@@ -26,20 +25,11 @@ void on_init(void)
 
     rf_set_target_fps(60);
 
-    // TTF Font loading with custom generation parameters
-    parrots = rf_load_image_from_file("../../../rayfork-examples/assets/parrots.png", RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO); // Load image in CPU memory (RAM)
+    font = rf_load_ttf_font_from_file("../../../rayfork-examples/assets/KAISG.ttf", RF_DEFAULT_FONT_SIZE, RF_FONT_ANTI_ALIAS, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO);
 
-    // Draw over image using custom font
-    font = rf_load_ttf_font_from_file("../../../rayfork-examples/assets/KAISG.ttf", RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO);
+    texture = rf_load_texture_from_file("../../../rayfork-examples/assets/parrots.png", RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO);
 
-    const char* text = "[Parrots font drawing]";
-    rf_image_draw_text_ex(&parrots,(rf_vec2){ 20.0f, 20.0f }, font, text, strlen(text), (float)font.base_size, 0.0f, RF_RED, RF_DEFAULT_ALLOCATOR);
-
-    texture = rf_load_texture_from_image(parrots);  // Image converted to texture, uploaded to GPU memory (VRAM)
-
-    rf_unload_image(parrots, RF_DEFAULT_ALLOCATOR);   // Once image has been converted to texture and uploaded to VRAM, it can be unloaded from RAM
-
-    position = (rf_vec2){ (float)(SCREEN_WIDTH / 2 - texture.width / 2), (float)(SCREEN_HEIGHT / 2 - texture.height / 2 - 20) };
+    position = (rf_vec2) { (float)(SCREEN_WIDTH / 2 - texture.width / 2), (float)(SCREEN_HEIGHT / 2 - texture.height / 2 - 20) };
 
     show_font = false;
 }
@@ -57,16 +47,14 @@ void on_frame(const input_data input)
 
         if (!show_font)
         {
-            // Draw texture with text already drawn inside
             rf_draw_texture(texture, position, 0.0f, 1.0f, RF_WHITE);
 
-            // Draw text directly using sprite font
             const char* text = "[Parrots font drawing]";
-            rf_draw_text_ex(font, text, strlen(text), (rf_vec2){ position.x + 20, position.y + 20 + 280 }, (float)font.base_size, 0.0f, RF_WHITE);
-        }
-        else rf_draw_texture(font.texture, (rf_vec2){ SCREEN_WIDTH / 2 - font.texture.width / 2, 50 }, 0.0f, 1.0f, RF_BLACK);
+            rf_draw_text_ex(font, text, strlen(text), (rf_vec2) { position.x + 20, position.y + 20 + 280 }, (float) font.base_size, 0, RF_WHITE);
 
-        rf_draw_text("PRESS SPACE to SEE USED SPRITEFONT ", 290, 420, 10, RF_DARKGRAY);
+            rf_draw_text("PRESS SPACE to SEE USED SPRITEFONT ", 290, 420, 10, RF_DARKGRAY);
+        }
+        else rf_draw_texture(font.texture, (rf_vec2) { SCREEN_WIDTH / 2 - font.texture.width / 2, 50 }, 0.0f, 1.0f, RF_BLACK);
 
     rf_end();
 }

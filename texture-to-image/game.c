@@ -24,15 +24,15 @@ void on_init(void)
 
     // NOTE: Textures MUST be loaded after Window initialization (OpenGL context is required)
 
-    image = rf_load_image_from_file("../../../rayfrok-examples/assets/raylib_logo.png", RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO);  // Load image data into CPU memory (RAM)
-    texture = rf_load_texture_from_image(image);       // Image converted to texture, GPU memory (RAM -> VRAM)
-    rf_unload_image(image, RF_DEFAULT_ALLOCATOR);                                    // Unload image data from CPU memory (RAM)
+    image = rf_load_image_from_file("../../../rayfork-examples/assets/raylib_logo.png", RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO);  // Load image data into CPU memory (RAM)
+    texture = rf_load_texture_from_image(image);  // Image converted to texture, GPU memory (RAM -> VRAM)
+    rf_unload_image(image, RF_DEFAULT_ALLOCATOR); // Unload image data from CPU memory (RAM)
 
-    image = rf_get_texture_data(texture, RF_DEFAULT_ALLOCATOR);                       // Retrieve image data from GPU memory (VRAM -> RAM)
-    rf_unload_texture(texture);                                // Unload texture from GPU memory (VRAM)
+    image = rf_get_texture_data(texture, RF_DEFAULT_ALLOCATOR); // Retrieve image data from GPU memory (VRAM -> RAM)
+    rf_unload_texture(texture);                                 // Unload texture from GPU memory (VRAM)
 
-    texture = rf_load_texture_from_image(image);                 // Recreate texture from retrieved image data (RAM -> VRAM)
-    rf_unload_image(image, RF_DEFAULT_ALLOCATOR);                                    // Unload retrieved image data from CPU memory (RAM)
+    texture = rf_load_texture_from_image(image);                // Recreate texture from retrieved image data (RAM -> VRAM)
+    rf_unload_image(image, RF_DEFAULT_ALLOCATOR);               // Unload retrieved image data from CPU memory (RAM)
 }
 
 void on_frame(const input_data input)

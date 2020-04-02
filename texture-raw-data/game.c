@@ -4,8 +4,9 @@
 #include "rayfork.h"
 #include "glad.h"
 
-rf_context   rf_ctx;
-rf_renderer_memory_buffers    rf_mem;
+rf_context                 rf_ctx;
+rf_renderer_memory_buffers rf_mem;
+rf_default_font_buffers    font_buffers;
 
 rf_image fudesumi_raw;
 rf_texture2d fudesumi;
@@ -17,7 +18,7 @@ void on_init(void)
 
     //Initialise rayfork and load the default font
     rf_init(&rf_ctx, &rf_mem, SCREEN_WIDTH, SCREEN_HEIGHT, RF_DEFAULT_OPENGL_PROCS);
-    rf_load_default_font(RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR);
+    rf_load_default_font(&font_buffers);
 
     rf_set_target_fps(60);
 
