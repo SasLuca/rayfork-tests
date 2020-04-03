@@ -6,7 +6,7 @@
 typedef struct input_data input_data;
 struct input_data
 {
-
+	int i;
 };
 
 void on_init(void);
