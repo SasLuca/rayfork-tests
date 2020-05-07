@@ -4,8 +4,6 @@ set(CMAKE_C_STANDARD 99)
 
 add_executable(hot-code-reloading win32_main.c)
 
-
-
 add_library(hot-code-reloading-dynamic SHARED
         game.c
         ../dependencies/glad/glad.c)

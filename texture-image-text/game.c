@@ -23,7 +23,7 @@ void on_init(void)
     rf_init(&rf_ctx, &rf_mem, SCREEN_WIDTH, SCREEN_HEIGHT, RF_DEFAULT_OPENGL_PROCS);
     rf_load_default_font(&default_font_buffers);
 
-    rf_set_target_fps(60);
+    //rf_set_target_fps(60);
 
     font = rf_load_ttf_font_from_file("../../../rayfork-examples/assets/KAISG.ttf", RF_DEFAULT_FONT_SIZE, RF_FONT_ANTI_ALIAS, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO);
 
@@ -42,6 +42,8 @@ void on_frame(const input_data input)
 
     // Draw
     rf_begin();
+
+        rf_draw_fps(0, 0);
 
         rf_clear(RF_RAYWHITE);
 

@@ -26,6 +26,8 @@ void on_init(void)
 
     image = rf_load_dds_image_from_file("../../../rayfork-examples/assets/mario.dds", RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO);
     texture = rf_load_texture_from_image(image.image);
+    int i = glGetError();
+    int j = 0;
 }
 
 void on_frame(void)
