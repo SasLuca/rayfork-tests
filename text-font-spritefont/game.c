@@ -6,7 +6,7 @@
 
 rf_context   rf_ctx;
 rf_renderer_memory_buffers rf_mem;
-rf_default_font_buffers    default_font_buffers;
+rf_default_font    default_font_buffers;
 
 const char msg_1[50] = " T HIS IS A custom SPRITE FONT...";
 const char msg_2[50] = "...and this is ANOTHER CUSTOM font...";

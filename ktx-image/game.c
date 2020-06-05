@@ -1,13 +1,12 @@
-// Implementation dds images in Rayfork
+// Implementation ktx images in Rayfork
 
 #include "rayfork.h"
 #include "glad.h"
 #include "sokol_app.h"
 #include "malloc.h"
 
-rf_context rf_ctx;
-rf_renderer_memory_buffers  rf_mem;
-rf_default_font font_mem;
+rf_context rayfork;
+rf_renderer_memory_buffers renderer_buffers;
 
 const int screen_width = 800;
 const int screen_height = 450;
@@ -21,13 +20,12 @@ void on_init(void)
     gladLoadGL();
 
     // Initialise rayfork and load the default font
-    rf_init(&rf_ctx, &rf_mem, screen_width, screen_height, RF_DEFAULT_OPENGL_PROCS);
-    rf_load_default_font(&font_mem);
+    rf_init(&rayfork, &renderer_buffers, screen_width, screen_height, RF_DEFAULT_OPENGL_PROCS);
 
-    image = rf_load_dds_image_from_file(RAYFORK_EXAMPLES_ASSETS_PATH "mario.dds", RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO);
-    texture = rf_load_texture_from_image(image.image);
-    int i = glGetError();
-    int j = 0;
+    const char* path = RAYFORK_EXAMPLES_ASSETS_PATH "ktx_test.ktx";
+
+    image = rf_load_ktx_image_from_file(path, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO);
+    texture = rf_load_texture_from_image_with_mipmaps(image);
 }
 
 void on_frame(void)

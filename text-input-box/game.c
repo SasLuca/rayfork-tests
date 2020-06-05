@@ -9,7 +9,7 @@
 
 rf_context   rf_ctx;
 rf_renderer_memory_buffers    rf_mem;
-rf_default_font_buffers     default_font_buffers;
+rf_default_font     default_font_buffers;
 
 char name[MAX_INPUT_CHARS + 1] = "\0";      // NOTE: One extra space required for line ending char '\0'
 int letter_count = 0;

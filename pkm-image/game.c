@@ -22,16 +22,10 @@ void on_init(void)
 
     // Initialise rayfork and load the default font
     rf_init(&rf_ctx, &rf_mem, screen_width, screen_height, RF_DEFAULT_OPENGL_PROCS);
-    rf_load_default_font(RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR);
 
-    const char* path = "../../../examples/assets/pkm_test.pkm";
+    const char* path = RAYFORK_EXAMPLES_ASSETS_PATH"pkm_test.pkm";
 
-    int size = RF_DEFAULT_IO.get_file_size_proc(path);
-    void* buffer = malloc(size);
-
-    RF_DEFAULT_IO.read_file_into_buffer_proc(path, buffer, size);
-
-    image = rf_load_image_from_pkm(buffer, RF_DEFAULT_ALLOCATOR);
+    image = rf_load_pkm_image_from_file(path, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO);
     texture = rf_load_texture_from_image(image);
 }
 

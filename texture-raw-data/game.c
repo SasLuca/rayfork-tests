@@ -6,7 +6,7 @@
 
 rf_context                 rf_ctx;
 rf_renderer_memory_buffers rf_mem;
-rf_default_font_buffers    font_buffers;
+rf_default_font    font_buffers;
 
 rf_image fudesumi_raw;
 rf_texture2d fudesumi;

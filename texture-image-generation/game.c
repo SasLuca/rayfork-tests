@@ -8,7 +8,7 @@
 
 rf_context   rf_ctx;
 rf_renderer_memory_buffers    rf_mem;
-struct rf_default_font_buffers default_font_buffers;
+struct rf_default_font default_font_buffers;
 
 rf_image vertical_gradient;
 rf_image horizontal_gradient;

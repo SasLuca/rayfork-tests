@@ -3,8 +3,10 @@ project(rayfork_examples C)
 
 set(CMAKE_C_STANDARD 99)
 
-# Set EXAMPLES_ASSETS_PATH
-add_compile_definitions(EXAMPLES_ASSETS_PATH="../../../rayfork-examples/")
+# Set RAYFORK_EXAMPLES_ASSETS_PATH
+if (NOT DEFINED RAYFORK_EXAMPLES_ASSETS_PATH)
+	add_compile_definitions(RAYFORK_EXAMPLES_ASSETS_PATH="../../../rayfork-examples/assets/")
+endif()
 
 # Include dependencies
 include_directories(dependencies/)
@@ -31,8 +33,8 @@ add_subdirectory(text_measuring)
 add_subdirectory(core-input-mouse)
 add_subdirectory(core-input-mouse-wheel)
 add_subdirectory(dds-image)
-add_subdirectory(pkm_image)
-add_subdirectory(ktx_image)
+add_subdirectory(pkm-image)
+add_subdirectory(ktx-image)
 add_subdirectory(pvr_image)
 add_subdirectory(astc_image)
 add_subdirectory(core-2d-camera)

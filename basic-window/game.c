@@ -6,7 +6,6 @@
 
 rf_context rf_ctx;
 rf_renderer_memory_buffers rf_mem;
-rf_default_font_buffers  rf_default_font_buf;
 
 int screen_width  = 800;
 int screen_height = 450;
@@ -18,7 +17,6 @@ void on_init(void)
 
     //Initialise rayfork and load the default font
     rf_init(&rf_ctx, &rf_mem, screen_width, screen_height, RF_DEFAULT_OPENGL_PROCS);
-    rf_load_default_font(&rf_default_font_buf);
 }
 
 void on_frame(void)

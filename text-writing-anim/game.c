@@ -8,7 +8,7 @@
 
 rf_context   rf_ctx;
 rf_renderer_memory_buffers    rf_mem;
-rf_default_font_buffers     default_font_buffers;
+rf_default_font     default_font_buffers;
 
 const char message[128] = "This sample illustrates a text writing\nanimation effect! Check it out! ;)";
 

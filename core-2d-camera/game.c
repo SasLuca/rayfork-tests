@@ -7,7 +7,7 @@
 
 rf_context rf_ctx;
 rf_renderer_memory_buffers rf_mem;
-rf_default_font_buffers default_font_mem;
+rf_default_font default_font_mem;
 
 const int screen_width  = 800;
 const int screen_height = 450;

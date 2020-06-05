@@ -5,7 +5,7 @@
 
 rf_context rf_ctx;
 rf_renderer_memory_buffers rf_mem;
-rf_default_font_buffers default_font_buffers;
+rf_default_font default_font_buffers;
 
 // NOTE: Be careful, background width must be equal or bigger than screen width
 // if not, texture should be draw more than two times for scrolling effect

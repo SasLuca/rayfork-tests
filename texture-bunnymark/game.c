@@ -20,7 +20,7 @@ struct bunny_t
 
 rf_context                 rf_ctx;
 rf_renderer_memory_buffers rf_mem;
-rf_default_font_buffers    default_font_mem;
+rf_default_font    default_font_mem;
 
 rf_texture2d               bunny_texture;
 bunny_t*                   bunnies;

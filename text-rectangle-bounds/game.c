@@ -8,7 +8,7 @@
 
 rf_context   rf_ctx;
 rf_renderer_memory_buffers    rf_mem;
-rf_default_font_buffers     default_font_buffers;
+rf_default_font     default_font_buffers;
 
 const char text[] = "Text cannot escape\tthis container\t...word wrap also works when active so here's \
 a long text for testing.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod \

@@ -6,7 +6,7 @@
 
 rf_context   rf_ctx;
 rf_renderer_memory_buffers rf_mem;
-rf_default_font_buffers    default_font_buffers;
+rf_default_font    default_font_buffers;
 
 rf_font font;
 rf_texture2d texture;
@@ -25,7 +25,7 @@ void on_init(void)
 
     //rf_set_target_fps(60);
 
-    font = rf_load_ttf_font_from_file("../../../rayfork-examples/assets/KAISG.ttf", RF_DEFAULT_FONT_SIZE, RF_FONT_ANTI_ALIAS, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO);
+    font = rf_load_ttf_font_from_file("../../../rayfork-examples/assets/KAISG.ttf", RF_DEFAULT_FONT_SIZE, RF_FONT_ANTIALIAS, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO);
 
     texture = rf_load_texture_from_file("../../../rayfork-examples/assets/parrots.png", RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO);
 

@@ -6,7 +6,7 @@
 
 rf_context   rf_ctx;
 rf_renderer_memory_buffers    rf_mem;
-rf_default_font_buffers default_font_buffers;
+rf_default_font default_font_buffers;
 
 rf_image image;
 rf_texture2d texture;
