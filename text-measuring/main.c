@@ -1,5 +1,3 @@
-//In this file we only initialise the window using sokol_app
-
 #include "rayfork.h"
 #include "glad.h"
 #include "GLFW/glfw3.h"
@@ -28,7 +26,7 @@ int main()
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "rayfork [core] example - first person maze", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "rayfork example - text measuring", NULL, NULL);
     glfwSetCharCallback(window, character_callback);
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);

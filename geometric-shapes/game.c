@@ -1,4 +1,4 @@
-//Implementation of the geometric shapes example from raylib using rayfork
+// Implementation of the geometric shapes example from raylib using rayfork
 
 #include "rayfork.h"
 #include "glad/glad.h"
@@ -52,8 +52,6 @@ void on_frame(void)
     rf_draw_grid(10, 1.0f); // Draw a grid
 
     rf_end_3d();
-
-    rf_draw_fps(10, 10);
 
     rf_end();
 }

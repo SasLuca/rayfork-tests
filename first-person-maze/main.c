@@ -1,5 +1,3 @@
-//In this file we only initialise the window using sokol_app
-
 #include "rayfork.h"
 #include "glad.h"
 #include "GLFW/glfw3.h"
@@ -54,32 +52,30 @@ int main()
     rf_renderer_memory_buffers rf_mem;
     rf_init(&rf_ctx, &rf_mem, SCREEN_WIDTH, SCREEN_HEIGHT, RF_DEFAULT_OPENGL_PROCS);
     rf_load_default_font(RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR);
-    rf_set_target_fps(60);
 
     //Load stuff
-    rf_image imMap        = rf_load_image_from_file("../../../examples/assets/cubicmap.png", RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO); // Load cubicmap image (RAM)
+    rf_image imMap        = rf_load_image_from_file(RAYFORK_EXAMPLES_ASSETS_PATH "cubicmap.png", RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO); // Load cubicmap image (RAM)
     rf_texture2d cubicmap = rf_load_texture_from_image(imMap); // Convert image to texture to display (VRAM)
-    rf_mesh mesh          = rf_gen_mesh_cubicmap(imMap, (rf_vec3){1.0f, 1.0f, 1.0f });
-    rf_model model        = rf_load_model_from_mesh(mesh);
+    rf_mesh mesh          = rf_gen_mesh_cubicmap(imMap, (rf_vec3){1.0f, 1.0f, 1.0f }, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR);
+    rf_model model        = rf_load_model_from_mesh(mesh, RF_DEFAULT_ALLOCATOR);
 
     rf_vec2 ball_position = {(float) SCREEN_WIDTH / 2, (float) SCREEN_HEIGHT / 2 };
     rf_camera3d camera = { { 0.2f, 0.4f, 0.2f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f }, 45.0f, 0 };
 
     // NOTE: By default each cube is mapped to one part of texture atlas
-    rf_texture2d texture = rf_load_texture("../../../examples/assets/cubicmap_atlas.png"); // Load map texture
+    rf_texture2d texture = rf_load_texture_from_file(RAYFORK_EXAMPLES_ASSETS_PATH "cubicmap_atlas.png", RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO); // Load map texture
     model.materials[0].maps[RF_MAP_DIFFUSE].texture = texture; // Set map diffuse texture
 
-    rf_color* mapPixels = rf_get_image_pixel_data(imMap);
-    rf_unload_image(imMap); // Unload image from RAM
+    rf_color* mapPixels = imMap.data;
 
     rf_vec3 mapPosition = {-16.0f, 0.0f, -8.0f };  // Set model position
     rf_vec3 playerPosition = camera.position;
 
-    rf_set_camera_mode(camera, RF_CAMERA_FIRST_PERSON);
+    rf_set_camera3d_mode(camera, RF_CAMERA_FIRST_PERSON);
 
     while (!glfwWindowShouldClose(window))
     {
-        //Update
+        // Update
         {
             double xpos, ypos;
             glfwGetCursorPos(window, &xpos, &ypos);
@@ -121,7 +117,7 @@ int main()
             }
         }
 
-        //Render
+        // Render
         rf_begin();
 
         rf_clear(RF_RAYWHITE);
@@ -138,8 +134,6 @@ int main()
 
         // Draw player position radar
         rf_draw_rectangle(SCREEN_WIDTH - cubicmap.width * 4 - 20 + playerCellX * 4, 20 + playerCellY * 4, 4, 4, RF_RED);
-
-        rf_draw_fps(10, 10);
 
         rf_end();
 
