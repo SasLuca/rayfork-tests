@@ -1,8 +1,12 @@
-// Implementation of the geometric shapes example from raylib using rayfork
+// In this file we only initialise the window using sokol_app
 
-#include "gfx/rayfork.h"
-#include "glad.h"
+#define SOKOL_IMPL
+#define SOKOL_GLCORE33
+#define SOKOL_WIN32_NO_GL_LOADER
+#define SOKOL_WIN32_FORCE_MAIN
 #include "sokol_app.h"
+#include "rayfork.h"
+#include "glad.h"
 #include "malloc.h"
 
 #define SCREEN_WIDTH  (800)
@@ -54,4 +58,15 @@ void on_frame(void)
                 RF_DARKBLUE);
     }
     rf_end();
+}
+
+sapp_desc sokol_main(int argc, char** argv)
+{
+    return (sapp_desc)
+    {
+        .width = 800,
+        .height = 450,
+        .init_cb = on_init,
+        .frame_cb = on_frame,
+    };
 }

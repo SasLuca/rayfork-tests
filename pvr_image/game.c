@@ -1,4 +1,4 @@
-#include "rayfork.h"
+#include "gfx/rayfork.h"
 #include "glad.h"
 #include "sokol_app.h"
 #include "malloc.h"

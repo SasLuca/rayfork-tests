@@ -1,7 +1,7 @@
 //Implementation of the 2d camera example from raylib using rayfork
 #include <stdlib.h>
 #include <time.h>
-#include "rayfork.h"
+#include "gfx/rayfork.h"
 #include "glad/glad.h"
 #include "game.h"
 

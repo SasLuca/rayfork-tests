@@ -1,6 +1,6 @@
 //Implementation of the sprite explosion example from raylib using rayfork
 #include "game.h"
-#include "rayfork.h"
+#include "gfx/rayfork.h"
 #include "glad.h"
 
 #define NUM_FRAMES      (8)

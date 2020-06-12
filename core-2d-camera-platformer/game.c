@@ -1,5 +1,8 @@
-//Implementation of the input example from raylib using rayfork
-#include "rayfork.h"
+// Implementation of the input example from raylib using rayfork
+
+#define SOKOL_IMPL
+#include "sokol_time.h"
+#include "gfx/rayfork.h"
 #include "glad/glad.h"
 #include "game.h"
 
@@ -69,28 +72,32 @@ char *cameraDescriptions[] = {
 
 void on_init(void)
 {
-    //Load opengl with glad
+    // Load opengl with glad
     gladLoadGL();
 
-    //Initialise rayfork and load the default font
+    stm_setup();
+
+    // Initialise rayfork and load the default font
     rf_init(&rf_ctx, &rf_mem, SCREEN_WIDTH, SCREEN_HEIGHT, RF_DEFAULT_OPENGL_PROCS);
-    rf_set_target_fps(60);
     rf_load_default_font(&default_font_buffers);
 
-    player.position = (rf_vec2){ 400, 280 };
+    player.position = (rf_vec2) { 400, 280 };
     player.speed = 0;
     player.can_jump = false;
 
     camera.target = player.position;
-    camera.offset = (rf_vec2){ SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 };
+    camera.offset = (rf_vec2) { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 };
     camera.rotation = 0.0f;
     camera.zoom = 1.0f;
 }
 
 void on_frame(const input_data input)
 {
-    //Update
-    float delta_time = rf_get_frame_time();
+    // Update
+    static uint64_t frame_time_begin = 0;
+    static float delta_time = 0;
+    delta_time = stm_sec(stm_since(frame_time_begin));
+    frame_time_begin = stm_now();
 
     update_player(input, delta_time);
 
@@ -133,6 +140,8 @@ void on_frame(const input_data input)
         rf_draw_text(cameraDescriptions[camera_option], 40, 140, 10, RF_DARKGRAY);
 
     rf_end();
+
+    //Sleep(10);
 }
 
 void update_player(const input_data input, float delta)

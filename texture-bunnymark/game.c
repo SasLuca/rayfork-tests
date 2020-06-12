@@ -1,7 +1,7 @@
 //Implementation of the geometric shapes example from raylib using rayfork
 
 #include "game.h"
-#include "rayfork.h"
+#include "gfx/rayfork.h"
 #include "glad.h"
 #include "stdlib.h"
 #include "stdio.h"

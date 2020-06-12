@@ -1,7 +1,7 @@
 //Implementation of the texture mouse painting example from raylib using rayfork
 
 #include "game.h"
-#include "rayfork.h"
+#include "gfx/rayfork.h"
 #include "glad.h"
 
 #define MAX_COLORS_COUNT    23          // Number of colors available

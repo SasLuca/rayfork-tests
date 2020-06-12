@@ -1,7 +1,7 @@
 //Implementation of the texture image generation example from raylib using rayfork
 
 #include "game.h"
-#include "rayfork.h"
+#include "gfx/rayfork.h"
 #include "glad.h"
 
 #define NUM_TEXTURES 7 // Currently we have 7 generation algorithms
