@@ -1,12 +1,11 @@
 //Implementation of the font loading example from raylib using rayfork
 
 #include "game.h"
-#include "gfx/rayfork.h"
+#include "rayfork.h"
 #include "glad.h"
 
-rf_context   rf_ctx;
-rf_renderer_memory_buffers    rf_mem;
-rf_default_font     default_font_buffers;
+rf_context rf_ctx;
+rf_renderer_memory_buffers rf_mem;
 
 // Define characters to draw
 // NOTE: raylib supports UTF-8 encoding, following list is actually codified as UTF8 internally
@@ -23,18 +22,15 @@ void on_init(void)
 
     //Initialise rayfork and load the default font
     rf_init(&rf_ctx, &rf_mem, SCREEN_WIDTH, SCREEN_HEIGHT, RF_DEFAULT_OPENGL_PROCS);
-    rf_load_default_font(&default_font_buffers);
-
-    rf_set_target_fps(60);
 
     // NOTE: Textures/Fonts MUST be loaded after Window initialization (OpenGL context is required)
 
     // BMFont (AngelCode) : Font data and image atlas have been generated using external program
-//    font_bm = rf_load_fnt_font_from_file("resources/pixantiqua.fnt");
+    // font_bm = rf_load_fnt_font_from_file("resources/pixantiqua.fnt");
 
     // TTF font : Font data and atlas are generated directly from TTF
     // NOTE: We define a font base size of 32 pixels tall and up-to 250 characters
-    font_ttf = rf_load_ttf_font_from_file("resources/pixantiqua.ttf", RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO);
+    font_ttf = rf_load_ttf_font_from_file_ez(ASSETS_PATH"pixantiqua.ttf", RF_DEFAULT_FONT_SIZE, RF_FONT_ANTIALIAS);
 }
 
 void on_frame(const input_data input)

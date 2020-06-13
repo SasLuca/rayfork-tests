@@ -1,12 +1,11 @@
 //Implementation of the mouse input example from raylib using rayfork
 
-#include "gfx/rayfork.h"
+#include "rayfork.h"
 #include "glad/glad.h"
 #include "game.h"
 
 rf_context rf_ctx;
 rf_renderer_memory_buffers rf_mem;
-rf_default_font default_font_buffers;
 
 const int screen_width = 800;
 const int screen_height = 450;
@@ -21,8 +20,6 @@ void on_init(void)
 
     //Initialise rayfork and load the default font
     rf_init(&rf_ctx, &rf_mem, screen_width, screen_height, RF_DEFAULT_OPENGL_PROCS);
-    rf_set_target_fps(60);
-    rf_load_default_font(&default_font_buffers);
 }
 
 void on_frame(const input_data input)

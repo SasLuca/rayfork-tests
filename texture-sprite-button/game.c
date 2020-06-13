@@ -1,13 +1,12 @@
-//Implementation of the sprite button example from raylib using rayfork
+// Implementation of the sprite button example from raylib using rayfork
 #include "game.h"
-#include "gfx/rayfork.h"
+#include "rayfork.h"
 #include "glad.h"
 
-#define NUM_FRAMES 3    // Number of frames (rectangles) for the button sprite texture
+#define NUM_FRAMES 3 // Number of frames (rectangles) for the button sprite texture
 
-rf_context   rf_ctx;
-rf_renderer_memory_buffers    rf_mem;
-rf_default_font default_font_buffers;
+rf_context rf_ctx;
+rf_renderer_memory_buffers rf_mem;
 
 // @TODO: fix this after rayaudio is implemented in rayfork
 //rf_sound fxButton = LoadSound("resources/buttonfx.wav");   // Load button sound
@@ -21,26 +20,23 @@ rf_rec sourceRec;
 // Define button bounds on screen
 rf_rec btnBounds;
 
-int btnState = 0;               // Button state: 0-NORMAL, 1-MOUSE_HOVER, 2-PRESSED
-bool btnAction = false;         // Button action should be activated
+int btnState = 0;       // Button state: 0-NORMAL, 1-MOUSE_HOVER, 2-PRESSED
+bool btnAction = false; // Button action should be activated
 
 rf_vec2 mousePoint = { 0.0f, 0.0f };
 
 void on_init(void)
 {
-    //Load opengl with glad
+    // Load opengl with glad
     gladLoadGL();
 
-    //Initialise rayfork and load the default font
+    // Initialise rayfork and load the default font
     rf_init(&rf_ctx, &rf_mem, SCREEN_WIDTH, SCREEN_HEIGHT, RF_DEFAULT_OPENGL_PROCS);
-    rf_load_default_font(&default_font_buffers);
 
     // @TODO: fix when rayaudio is implemented in rayfrok
-//    rf_init_audio_device();
+    //rf_init_audio_device();
 
-    rf_set_target_fps(60);
-
-    button = rf_load_texture_from_file("../../../rayfork-examples/assets/button.png", RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO); // Load button texture
+    button = rf_load_texture_from_file(ASSETS_PATH"button.png", RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO); // Load button texture
 
     frameHeight = button.height/NUM_FRAMES;
 

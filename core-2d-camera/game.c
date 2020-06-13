@@ -1,13 +1,12 @@
 //Implementation of the 2d camera example from raylib using rayfork
 #include <stdlib.h>
 #include <time.h>
-#include "gfx/rayfork.h"
+#include "rayfork.h"
 #include "glad/glad.h"
 #include "game.h"
 
 rf_context rf_ctx;
 rf_renderer_memory_buffers rf_mem;
-rf_default_font default_font_mem;
 
 const int screen_width  = 800;
 const int screen_height = 450;
@@ -26,15 +25,13 @@ int get_random_value(int min, int max) { return rand() % (max - min) + min; }
 
 void on_init(void)
 {
-    //Load opengl with glad
+    // Load opengl with glad
     gladLoadGL();
 
-    //Initialise rayfork and load the default font
+    // Initialise rayfork and load the default font
     rf_init(&rf_ctx, &rf_mem, screen_width, screen_height, RF_DEFAULT_OPENGL_PROCS);
-    rf_set_target_fps(60);
-    rf_load_default_font(&default_font_mem);
 
-    //Seed the rand() function
+    // Seed the rand() function
     srand(time(NULL));
 
     camera.target = (rf_vec2) { player.x + 20, player.y + 20 };

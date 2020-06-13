@@ -1,7 +1,7 @@
 //Implementation of the geometric shapes example from raylib using rayfork
 
 #include "game.h"
-#include "gfx/rayfork.h"
+#include "rayfork.h"
 #include "glad.h"
 #include "stdlib.h"
 #include "stdio.h"
@@ -47,7 +47,7 @@ void on_init(void)
     rf_init(&rf_ctx, &rf_mem, SCREEN_WIDTH, SCREEN_HEIGHT, RF_DEFAULT_OPENGL_PROCS);
     rf_load_default_font(&default_font_mem);
 
-    bunny_texture = rf_load_texture_from_file(EXAMPLES_ASSETS_PATH "assets/wabbit_alpha.png", RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO);
+    bunny_texture = rf_load_texture_from_file(ASSETS_PATH"wabbit_alpha.png", RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO);
 
     bunnies = (bunny_t*) malloc(MAX_BUNNIES * sizeof(bunny_t)); // Bunnies array
 }
@@ -96,12 +96,10 @@ void on_frame(const input_data input)
         // Process of sending data is costly and it could happen that GPU data has not been completely
         // processed for drawing while new data is tried to be sent (updating current in-use buffers)
         // it could generates a stall and consequently a frame drop, limiting the number of drawn bunnies
-        rf_draw_texture(bunny_texture, (rf_vec2) { bunnies[i].position.x, bunnies[i].position.y }, 0, 1, bunnies[i].color);
+        rf_draw_texture(bunny_texture, bunnies[i].position.x, bunnies[i].position.y, bunnies[i].color);
     }
 
     rf_draw_rectangle(0, 0, SCREEN_WIDTH, 40, RF_BLACK);
-
-    rf_draw_fps(10, 10);
 
     char text[1024];
     snprintf(text, sizeof(text), "bunnies: %i", bunnies_count);

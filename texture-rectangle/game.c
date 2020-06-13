@@ -1,7 +1,7 @@
 //Implementation of the texture rectangle example from raylib using rayfork
 
 #include "game.h"
-#include "gfx/rayfork.h"
+#include "rayfork.h"
 #include "glad.h"
 #include <stdio.h>
 
@@ -33,9 +33,7 @@ void on_init(void)
     rf_init(&rf_ctx, &rf_mem, SCREEN_WIDTH, SCREEN_HEIGHT, RF_DEFAULT_OPENGL_PROCS);
     rf_load_default_font(&default_font_buffers);
 
-    rf_set_target_fps(60);
-
-    scarfy = rf_load_texture_from_file("../../../rayfork-examples/assets/scarfy.png", RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO);
+    scarfy = rf_load_texture_from_file(ASSETS_PATH"scarfy.png", RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO);
     frame_rec.pos = (rf_vec2){ 0.0f, 0.0f};
     frame_rec.size = (rf_sizef){ (float)scarfy.width/6, (float)scarfy.height };
 
@@ -67,7 +65,7 @@ void on_frame(const input_data input)
 
     rf_clear(RF_RAYWHITE);
 
-    rf_draw_texture(scarfy, (rf_vec2){ 15, 40}, 0.0f, 1.0f, RF_WHITE);
+    rf_draw_texture(scarfy, 15, 40, RF_WHITE);
     rf_draw_rectangle_outline((rf_rec){ 15, 40, scarfy.width, scarfy.height }, 1, RF_LIME);
     rf_draw_rectangle_outline((rf_rec){ 15 + frame_rec.x, 40 + frame_rec.y, frame_rec.width, frame_rec.height }, 1, RF_RED);
 

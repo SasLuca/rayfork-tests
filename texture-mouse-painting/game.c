@@ -1,14 +1,13 @@
-//Implementation of the texture mouse painting example from raylib using rayfork
+// Implementation of the texture mouse painting example from raylib using rayfork
 
 #include "game.h"
-#include "gfx/rayfork.h"
+#include "rayfork.h"
 #include "glad.h"
 
-#define MAX_COLORS_COUNT    23          // Number of colors available
+#define MAX_COLORS_COUNT 23
 
-rf_context   rf_ctx;
-rf_renderer_memory_buffers    rf_mem;
-rf_default_font    default_font_buffers;
+rf_context rf_ctx;
+rf_renderer_memory_buffers rf_mem;
 
 // Colours to choose from
 rf_color colors[MAX_COLORS_COUNT] = {
@@ -29,16 +28,15 @@ bool btn_save_mouse_hover = false;
 bool show_save_message = false;
 int save_message_counter = 0;
 
-rf_render_texture target;
+rf_render_texture2d target;
 
 void on_init(void)
 {
-    //Load opengl with glad
+    // Load opengl with glad
     gladLoadGL();
 
-    //Initialise rayfork and load the default font
+    // Initialise rayfork and load the default font
     rf_init(&rf_ctx, &rf_mem, SCREEN_WIDTH, SCREEN_HEIGHT, RF_DEFAULT_OPENGL_PROCS);
-    rf_load_default_font(&default_font_buffers);
 
     for (int i = 0; i < MAX_COLORS_COUNT; i++)
     {
@@ -55,8 +53,6 @@ void on_init(void)
     rf_begin_render_to_texture(target);
     rf_clear(colors[0]);
     rf_end_render_to_texture();
-
-    rf_set_target_fps(120);              // Set our game to run at 120 frames-per-second
 }
 
 void on_frame(const input_data input)

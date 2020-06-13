@@ -1,4 +1,4 @@
-#include "gfx/rayfork.h"
+#include "rayfork.h"
 #include "glad.h"
 #include "GLFW/glfw3.h"
 

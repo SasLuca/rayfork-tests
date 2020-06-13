@@ -26,7 +26,7 @@ int main()
         rf_begin();
         rf_clear(RF_RAYWHITE);
         rf_draw_rectangle(0, 0, 100, 100, RF_RED);
-        rf_draw_texture(texture, (rf_vec2) {0}, 0, 1, RF_WHITE);
+        rf_draw_texture(texture, 0, 0, RF_WHITE);
         rf_end();
 
         glfwPollEvents();

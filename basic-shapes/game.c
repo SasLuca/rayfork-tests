@@ -1,6 +1,6 @@
 // Implementation of the geometric shapes example from raylib using rayfork
 
-#include "gfx/rayfork.h"
+#include "rayfork.h"
 #include "glad.h"
 #include "sokol_app.h"
 #include "malloc.h"

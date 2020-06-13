@@ -1,7 +1,7 @@
 //Implementation of the texture image generation example from raylib using rayfork
 
 #include "game.h"
-#include "gfx/rayfork.h"
+#include "rayfork.h"
 #include "glad.h"
 
 #define NUM_TEXTURES 7 // Currently we have 7 generation algorithms
@@ -31,15 +31,13 @@ void on_init(void)
     rf_init(&rf_ctx, &rf_mem, SCREEN_WIDTH, SCREEN_HEIGHT, RF_DEFAULT_OPENGL_PROCS);
     rf_load_default_font(&default_font_buffers);
 
-    rf_set_target_fps(60);
-
-    vertical_gradient = rf_gen_image_gradient_v(SCREEN_WIDTH, SCREEN_HEIGHT, RF_RED, RF_BLUE, RF_DEFAULT_ALLOCATOR);
-    horizontal_gradient = rf_gen_image_gradient_h(SCREEN_WIDTH, SCREEN_HEIGHT, RF_RED, RF_BLUE, RF_DEFAULT_ALLOCATOR);
-    radial_gradient = rf_gen_image_gradient_radial(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f, RF_WHITE, RF_BLACK, RF_DEFAULT_ALLOCATOR);
-    checked = rf_gen_image_checked(SCREEN_WIDTH, SCREEN_HEIGHT, 32, 32, RF_RED, RF_BLUE, RF_DEFAULT_ALLOCATOR);
-    white_noise = rf_gen_image_white_noise(SCREEN_WIDTH, SCREEN_HEIGHT, 0.5f, RF_DEFAULT_ALLOCATOR);
-    perlin_noise = rf_gen_image_perlin_noise(SCREEN_WIDTH, SCREEN_HEIGHT, 50, 50, 4.0f, RF_DEFAULT_ALLOCATOR);
-    cellular = rf_gen_image_cellular(SCREEN_WIDTH, SCREEN_HEIGHT, 32, RF_DEFAULT_ALLOCATOR);
+    vertical_gradient = rf_gen_image_gradient_v_ez(SCREEN_WIDTH, SCREEN_HEIGHT, RF_RED, RF_BLUE);
+    horizontal_gradient = rf_gen_image_gradient_h_ez(SCREEN_WIDTH, SCREEN_HEIGHT, RF_RED, RF_BLUE);
+    radial_gradient = rf_gen_image_gradient_radial_ez(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f, RF_WHITE, RF_BLACK);
+    checked = rf_gen_image_checked_ez(SCREEN_WIDTH, SCREEN_HEIGHT, 32, 32, RF_RED, RF_BLUE);
+    white_noise = rf_gen_image_white_noise_ez(SCREEN_WIDTH, SCREEN_HEIGHT, 0.5f);
+    perlin_noise = rf_gen_image_perlin_noise_ez(SCREEN_WIDTH, SCREEN_HEIGHT, 50, 50, 4.0f);
+    cellular = rf_gen_image_cellular_ez(SCREEN_WIDTH, SCREEN_HEIGHT, 32);
 
     textures[0] = rf_load_texture_from_image(vertical_gradient);
     textures[1] = rf_load_texture_from_image(horizontal_gradient);
@@ -49,13 +47,13 @@ void on_init(void)
     textures[5] = rf_load_texture_from_image(perlin_noise);
     textures[6] = rf_load_texture_from_image(cellular);
 
-    rf_unload_image(vertical_gradient, RF_DEFAULT_ALLOCATOR);
-    rf_unload_image(horizontal_gradient, RF_DEFAULT_ALLOCATOR);
-    rf_unload_image(radial_gradient, RF_DEFAULT_ALLOCATOR);
-    rf_unload_image(checked, RF_DEFAULT_ALLOCATOR);
-    rf_unload_image(white_noise, RF_DEFAULT_ALLOCATOR);
-    rf_unload_image(perlin_noise, RF_DEFAULT_ALLOCATOR);
-    rf_unload_image(cellular, RF_DEFAULT_ALLOCATOR);
+    rf_unload_image_ez(vertical_gradient);
+    rf_unload_image_ez(horizontal_gradient);
+    rf_unload_image_ez(radial_gradient);
+    rf_unload_image_ez(checked);
+    rf_unload_image_ez(white_noise);
+    rf_unload_image_ez(perlin_noise);
+    rf_unload_image_ez(cellular);
 }
 
 void on_frame(const input_data input)
@@ -71,7 +69,7 @@ void on_frame(const input_data input)
 
     rf_clear(RF_RAYWHITE);
 
-    rf_draw_texture(textures[current_texture], (rf_vec2){ 0, 0 }, 0.0f, 1.0f, RF_WHITE);
+    rf_draw_texture(textures[current_texture], 0, 0, RF_WHITE);
 
     rf_draw_rectangle(30, 400, 325, 30, rf_fade(RF_SKYBLUE, 0.5f));
     rf_draw_rectangle_outline((rf_rec){ 30, 400, 325, 30 }, 1.0f, rf_fade(RF_WHITE, 0.5f));

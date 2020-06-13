@@ -1,6 +1,6 @@
 // Implementation dds images in Rayfork
 
-#include "gfx/rayfork.h"
+#include "rayfork.h"
 #include "glad.h"
 #include "sokol_app.h"
 #include "malloc.h"
@@ -24,7 +24,7 @@ void on_init(void)
     rf_init(&rf_ctx, &rf_mem, screen_width, screen_height, RF_DEFAULT_OPENGL_PROCS);
     rf_load_default_font(&font_mem);
 
-    image = rf_load_dds_image_from_file(RAYFORK_EXAMPLES_ASSETS_PATH "mario.dds", RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO);
+    image = rf_load_dds_image_from_file(ASSETS_PATH "mario.dds", RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO);
     texture = rf_load_texture_from_image(image.image);
     int i = glGetError();
     int j = 0;
@@ -36,7 +36,7 @@ void on_frame(void)
     {
         rf_clear(RF_RAYWHITE);
 
-        rf_draw_texture(texture, (rf_vec2){ 0.0f, 0.0f }, 0.0f, 0.1f, RF_WHITE);
+        rf_draw_texture_ex(texture, 0, 0, texture.width * 0.1f, texture.height * 0.1f, 1, RF_WHITE);
     }
     rf_end();
 }

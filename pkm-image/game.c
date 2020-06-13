@@ -1,7 +1,7 @@
 // Implementation of pkm images in RayFork
 // Needs to be tested on android
 
-#include "gfx/rayfork.h"
+#include "rayfork.h"
 #include "glad.h"
 #include "sokol_app.h"
 #include "malloc.h"
@@ -23,9 +23,9 @@ void on_init(void)
     // Initialise rayfork and load the default font
     rf_init(&rf_ctx, &rf_mem, screen_width, screen_height, RF_DEFAULT_OPENGL_PROCS);
 
-    const char* path = RAYFORK_EXAMPLES_ASSETS_PATH"pkm_test.pkm";
+    const char* path = ASSETS_PATH"pkm_test.pkm";
 
-    image = rf_load_pkm_image_from_file(path, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO);
+    image = rf_load_pkm_image_from_file_ez(path);
     texture = rf_load_texture_from_image(image);
 }
 
@@ -33,9 +33,9 @@ void on_frame(void)
 {
     rf_begin();
     {
-        rf_clear(RF_BLACK);
+        rf_clear(RF_WHITE);
 
-        rf_draw_texture(texture, (rf_vec2){ 0.0f, 0.0f }, 0.0f, 0.1f, RF_WHITE);
+        rf_draw_texture_ex(texture, 0, 0, texture.width * 0.1, texture.height * 0.1, 0, RF_WHITE);
     }
     rf_end();
 }

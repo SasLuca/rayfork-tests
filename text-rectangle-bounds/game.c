@@ -2,13 +2,12 @@
 
 #include <stdio.h>
 #include "game.h"
-#include "gfx/rayfork.h"
+#include "rayfork.h"
 #include "glad.h"
 
 
-rf_context   rf_ctx;
-rf_renderer_memory_buffers    rf_mem;
-rf_default_font     default_font_buffers;
+rf_context rf_ctx;
+rf_renderer_memory_buffers rf_mem;
 
 const char text[] = "Text cannot escape\tthis container\t...word wrap also works when active so here's \
 a long text for testing.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod \
@@ -32,14 +31,11 @@ rf_font font;
 
 void on_init(void)
 {
-    //Load opengl with glad
+    // Load opengl with glad
     gladLoadGL();
 
-    //Initialise rayfork and load the default font
+    // Initialise rayfork and load the default font
     rf_init(&rf_ctx, &rf_mem, SCREEN_WIDTH, SCREEN_HEIGHT, RF_DEFAULT_OPENGL_PROCS);
-    rf_load_default_font(&default_font_buffers);
-
-    rf_set_target_fps(60);
 
     resizer = (rf_rec){ container.x + container.width - 17, container.y + container.height - 17, 14, 14 };
     

@@ -1,14 +1,13 @@
-//Implementation of the sprite explosion example from raylib using rayfork
+// Implementation of the sprite explosion example from raylib using rayfork
 #include "game.h"
-#include "gfx/rayfork.h"
+#include "rayfork.h"
 #include "glad.h"
 
-#define NUM_FRAMES      (8)
-#define NUM_LINES       (6)
+#define NUM_FRAMES (8)
+#define NUM_LINES  (6)
 
-rf_context   rf_ctx;
-rf_renderer_memory_buffers    rf_mem;
-rf_default_font default_font_buffers;
+rf_context rf_ctx;
+rf_renderer_memory_buffers rf_mem;
 
 rf_texture2d explosion;
 
@@ -30,17 +29,15 @@ void on_init(void)
 
     //Initialise rayfork and load the default font
     rf_init(&rf_ctx, &rf_mem, SCREEN_WIDTH, SCREEN_HEIGHT, RF_DEFAULT_OPENGL_PROCS);
-    rf_load_default_font(&default_font_buffers);
-
-    rf_set_target_fps(120);
 
     // @TODO: Fix when audio is implemented
-//    InitAudioDevice();
+    //InitAudioDevice();
+
     // Load explosion sound
-//    Sound fxBoom = LoadSound("resources/boom.wav");
+    //Sound fxBoom = LoadSound("resources/boom.wav");
 
     // Load explosion texture
-    explosion = rf_load_texture_from_file("../../../rayfork-examples/assets/explosion.png", RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO);
+    explosion = rf_load_texture_from_file(ASSETS_PATH"explosion.png", RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO);
 
     // Init variables for animation
     frame_width = explosion.width/NUM_FRAMES;    // Sprite one frame rectangle width

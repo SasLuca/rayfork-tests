@@ -18,9 +18,7 @@ extern void game_init(game_data_t* game_data)
 
     //Initialise rayfork and load the default font
     rf_init(&game_data->rf_ctx, &game_data->rf_mem, global_game_data->screen_width, global_game_data->screen_height, RF_DEFAULT_OPENGL_PROCS);
-    rf_set_target_fps(60);
 
-    rf_load_default_font(&game_data->default_font_mem);
 }
 
 extern void game_refresh(game_data_t* game_data)
@@ -44,12 +42,12 @@ extern void game_update(void)
         if (global_game_data->reload_count > 0)
         {
             char temp_str[512];
-            snprintf(temp_str, 512, "Some basic shapes available on raylib\nCode reloaded %d times", global_game_data->reload_count);
+            snprintf(temp_str, 512, "Press `R` to reload\nCode reloaded %d times", global_game_data->reload_count);
             rf_draw_text(temp_str, 20, 20, 20, RF_DARKGRAY);
         }
         else
         {
-            rf_draw_text("some basic shapes available on raylib", 20, 20, 20, RF_DARKGRAY);
+            rf_draw_text("Press `R` to reload", 20, 20, 20, RF_DARKGRAY);
         }
 
         rf_draw_circle(screen_width / 4, 120, 35, RF_DARKBLUE);

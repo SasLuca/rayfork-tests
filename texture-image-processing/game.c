@@ -1,7 +1,7 @@
 //Implementation of the texture image processing example from raylib using rayfork
 
 #include "game.h"
-#include "gfx/rayfork.h"
+#include "rayfork.h"
 #include "glad.h"
 
 rf_context   rf_ctx;
@@ -49,9 +49,7 @@ void on_init(void)
     rf_init(&rf_ctx, &rf_mem, SCREEN_WIDTH, SCREEN_HEIGHT, RF_DEFAULT_OPENGL_PROCS);
     rf_load_default_font(&default_font_buffers);
 
-    rf_set_target_fps(60);
-
-    image = rf_load_image_from_file("../../../rayfork-examples/assets/parrots.png", RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO);
+    image = rf_load_image_from_file(ASSETS_PATH"parrots.png", RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO);
     rf_image_format(image, RF_UNCOMPRESSED_R8G8B8A8, RF_DEFAULT_ALLOCATOR);
 
     texture = rf_load_texture_from_image(image);
@@ -78,7 +76,7 @@ void on_frame(const input_data input)
     if (texture_reload)
     {
         rf_unload_image(image, RF_DEFAULT_ALLOCATOR); // Unload current image data
-        image = rf_load_image_from_file("../../../rayfork-examples/assets/parrots.png", RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO); // Re-load image data
+        image = rf_load_image_from_file(ASSETS_PATH"parrots.png", RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO); // Re-load image data
 
         // NOTE: Image processing is a costly CPU process to be done every frame,
         // If image processing is required in a frame-basis, it should be done
@@ -99,7 +97,7 @@ void on_frame(const input_data input)
         int pixels_size = image.width * image.height * sizeof(rf_color);
         rf_color* pixels = RF_ALLOC(RF_DEFAULT_ALLOCATOR, pixels_size);
         rf_format_pixels_to_rgba32(image.data, rf_image_size(image), image.format, pixels, pixels_size); // Get pixel data from image (RGBA 32bit)
-        rf_update_texture(texture, pixels); // Update texture with new image data
+        rf_update_texture(texture, pixels, pixels_size); // Update texture with new image data
         RF_FREE(RF_DEFAULT_ALLOCATOR, pixels); // Unload pixels data from RAM
 
         texture_reload = false;
@@ -125,7 +123,7 @@ void on_frame(const input_data input)
                     (i == current_process) ? RF_DARKBLUE : RF_DARKGRAY);
         }
 
-        rf_draw_texture(texture, (rf_vec2){ SCREEN_WIDTH - texture.width - 60, SCREEN_HEIGHT / 2 - texture.height / 2 }, 0.0f, 1.0f, RF_WHITE);
+        rf_draw_texture(texture, SCREEN_WIDTH - texture.width - 60, SCREEN_HEIGHT / 2 - texture.height / 2, RF_WHITE);
         rf_draw_rectangle_outline((rf_rec){ SCREEN_WIDTH - texture.width - 60, SCREEN_HEIGHT / 2 - texture.height / 2, texture.width, texture.height}, 1.0f, RF_BLACK);
 
     rf_end();

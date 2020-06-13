@@ -2,13 +2,12 @@
 
 #include <stdio.h>
 #include "game.h"
-#include "gfx/rayfork.h"
+#include "rayfork.h"
 #include "glad.h"
 
 
-rf_context   rf_ctx;
-rf_renderer_memory_buffers    rf_mem;
-rf_default_font     default_font_buffers;
+rf_context rf_ctx;
+rf_renderer_memory_buffers rf_mem;
 
 #define SIZEOF(A) (sizeof(A)/sizeof(A[0]))
 #define EMOJI_PER_WIDTH 8
@@ -151,9 +150,6 @@ void on_init(void)
 
     //Initialise rayfork and load the default font
     rf_init(&rf_ctx, &rf_mem, SCREEN_WIDTH, SCREEN_HEIGHT, RF_DEFAULT_OPENGL_PROCS);
-    rf_load_default_font(&default_font_buffers);
-
-    rf_set_target_fps(60);
 
     // Load the font resources
     // NOTE: font_asian is for asian languages,
@@ -261,7 +257,7 @@ void on_frame(const input_data input)
     
             // Draw the info text below the main message
             int size = strlen(messages[message].text);
-            int len = GetCodepointsCount(messages[message].text);
+            int len = rf_count_utf8_chars(messages[message].text, size).total_rune_count;
 
             const char info[50];
             snprintf(info, 50, "%s %u characters %i bytes", messages[message].language, len, size);

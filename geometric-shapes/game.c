@@ -1,6 +1,6 @@
 // Implementation of the geometric shapes example from raylib using rayfork
 
-#include "gfx/rayfork.h"
+#include "rayfork.h"
 #include "glad/glad.h"
 #include "sokol_app.h"
 
@@ -13,12 +13,11 @@ const int screen_height = 450;
 
 void on_init(void)
 {
-    //Load opengl with glad
+    // Load opengl with glad
     gladLoadGL();
 
-    //Initialise rayfork and load the default font
+    // Initialise rayfork and load the default font
     rf_init(&rf_ctx, &rf_mem, screen_width, screen_height, RF_DEFAULT_OPENGL_PROCS);
-    rf_load_default_font(RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR);
 
     camera.position = (rf_vec3) {0.0f, 10.0f, 10.0f };
     camera.target   = (rf_vec3) {0.0f, 0.0f, 0.0f };
@@ -49,7 +48,7 @@ void on_frame(void)
     rf_draw_cylinder((rf_vec3) {1.0f, 0.0f, -4.0f}, 0.0f, 1.5f, 3.0f, 8, RF_GOLD);
     rf_draw_cylinder_wires((rf_vec3) {1.0f, 0.0f, -4.0f}, 0.0f, 1.5f, 3.0f, 8, RF_PINK);
 
-    rf_draw_grid(10, 1.0f); // Draw a grid
+    rf_draw_grid(10, 1.0f);
 
     rf_end_3d();
 

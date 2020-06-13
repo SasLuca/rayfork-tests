@@ -1,7 +1,7 @@
 //Implementation of the texture image text example from raylib using rayfork
 
 #include "game.h"
-#include "gfx/rayfork.h"
+#include "rayfork.h"
 #include "glad.h"
 
 rf_context   rf_ctx;
@@ -25,9 +25,9 @@ void on_init(void)
 
     //rf_set_target_fps(60);
 
-    font = rf_load_ttf_font_from_file("../../../rayfork-examples/assets/KAISG.ttf", RF_DEFAULT_FONT_SIZE, RF_FONT_ANTIALIAS, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO);
+    font = rf_load_ttf_font_from_file_ez(ASSETS_PATH"KAISG.ttf", RF_DEFAULT_FONT_SIZE, RF_FONT_ANTIALIAS);
 
-    texture = rf_load_texture_from_file("../../../rayfork-examples/assets/parrots.png", RF_DEFAULT_ALLOCATOR, RF_DEFAULT_IO);
+    texture = rf_load_texture_from_file_ez(ASSETS_PATH"parrots.png");
 
     position = (rf_vec2) { (float)(SCREEN_WIDTH / 2 - texture.width / 2), (float)(SCREEN_HEIGHT / 2 - texture.height / 2 - 20) };
 
@@ -43,20 +43,18 @@ void on_frame(const input_data input)
     // Draw
     rf_begin();
 
-        rf_draw_fps(0, 0);
-
         rf_clear(RF_RAYWHITE);
 
         if (!show_font)
         {
-            rf_draw_texture(texture, position, 0.0f, 1.0f, RF_WHITE);
+            rf_draw_texture(texture, position.x, position.y, RF_WHITE);
 
             const char* text = "[Parrots font drawing]";
             rf_draw_text_ex(font, text, strlen(text), (rf_vec2) { position.x + 20, position.y + 20 + 280 }, (float) font.base_size, 0, RF_WHITE);
 
             rf_draw_text("PRESS SPACE to SEE USED SPRITEFONT ", 290, 420, 10, RF_DARKGRAY);
         }
-        else rf_draw_texture(font.texture, (rf_vec2) { SCREEN_WIDTH / 2 - font.texture.width / 2, 50 }, 0.0f, 1.0f, RF_BLACK);
+        else rf_draw_texture(font.texture, SCREEN_WIDTH / 2 - font.texture.width / 2, 50, RF_BLACK);
 
     rf_end();
 }

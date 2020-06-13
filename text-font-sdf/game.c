@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "game.h"
-#include "gfx/rayfork.h"
+#include "rayfork.h"
 #include "glad.h"
 
 rf_context   rf_ctx;

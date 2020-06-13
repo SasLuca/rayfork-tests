@@ -1,6 +1,6 @@
 //Implementation of the geometric shapes example from raylib using rayfork
 
-#include "gfx/rayfork.h"
+#include "rayfork.h"
 #include "glad.h"
 #include "sokol_app.h"
 #include "stdio.h"
@@ -42,7 +42,6 @@ void on_init(void)
     //Initialise rayfork and load the default font
     rf_init(&rf_ctx, &rf_mem, SCREEN_WIDTH, SCREEN_HEIGHT, RF_DEFAULT_OPENGL_PROCS);
     rf_load_default_font(&default_font_buffers);
-    rf_set_target_fps(60);
 }
 
 void on_frame(void)
@@ -97,8 +96,6 @@ void on_frame(void)
             snprintf(text_buff, 512, "Collision Area: %i", (int) box_collision.width * (int) box_collision.height);
             rf_draw_text(text_buff, SCREEN_WIDTH / 2 - 100, screen_upper_limit + 10, 20, RF_BLACK);
         }
-
-        rf_draw_fps(10, 10);
     }
     rf_end();
 }
