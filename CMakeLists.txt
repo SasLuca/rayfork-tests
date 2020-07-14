@@ -1,68 +1,34 @@
 cmake_minimum_required(VERSION 3.1)
-project(rayfork_examples C)
+project(rayfork-tests LANGUAGES C CXX)
 
-set(CMAKE_C_STANDARD 99)
-
-# Set ASSETS_PATH
+# Set ASSETS_PATH define
 if (NOT DEFINED ASSETS_PATH)
 	add_compile_definitions(ASSETS_PATH="${CMAKE_CURRENT_SOURCE_DIR}/assets/")
 endif()
 
-# Include dependencies
-include_directories(dependencies/)
-include_directories(dependencies/sokol)
-include_directories(dependencies/glad)
+# Set path variables
+set(rayfork_path "${CMAKE_SOURCE_DIR}/source/")
+set(platform_header_path "${CMAKE_SOURCE_DIR}/tests/platform-independent-tests/platform-layers/")
 
-# Setup GLFW
-set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-add_subdirectory(dependencies/glfw EXCLUDE_FROM_ALL)
+# Add sokol examples
+add_subdirectory(platform-independent-tests/platform-layers/sokol)       # Add the sokol platform layer
+file(GLOB files "platform-independent-tests/tests/*.c")                  # Create an iterable with all the filenames in examples/
+foreach(file ${files})                                                   # Iterate over all files
+	get_filename_component(name ${file} NAME_WE)                         # Create a variable `name` that stores the filename without the extension. NAME_WE means filename with extension. (https://cmake.org/cmake/help/v3.0/command/get_filename_component.html).
+	add_executable(${name})                                     		 # Create the target for the specific example
+	target_sources(${name} PRIVATE ${file})				    			 # Add sources to target
+	target_link_libraries(${name} PRIVATE sokol-platform-layer rayfork)  # Link with the platform layer and rayfork
+	target_include_directories(${name} PUBLIC platform-independent-tests/platform-layers/) # Add platform.h to the include path
+endforeach()
 
-# Include all examples
-add_subdirectory(basic-window)
-add_subdirectory(basic-shapes)
-add_subdirectory(core-input-keys)
-add_subdirectory(collision-area)
-add_subdirectory(geometric-shapes)
-add_subdirectory(raw_audio_stream)
-add_subdirectory(hot-code-reloading)
-add_subdirectory(texture-bunnymark)
-add_subdirectory(first-person-maze)
-add_subdirectory(text-measuring)
-add_subdirectory(core-input-mouse)
-add_subdirectory(core-input-mouse-wheel)
-add_subdirectory(dds-image)
-add_subdirectory(pkm-image)
-add_subdirectory(ktx-image)
-add_subdirectory(core-2d-camera)
-add_subdirectory(core-2d-camera-platformer)
-add_subdirectory(texture-rectangle)
-add_subdirectory(texture-logo-raylib)
-add_subdirectory(texture-mouse-painting)
-add_subdirectory(texture-srcrec-destrec)
-add_subdirectory(texture-image-drawing)
-add_subdirectory(texture-image-loading)
-add_subdirectory(texture-image-generation)
-add_subdirectory(texture-image-processing)
-add_subdirectory(texture-image-text)
-add_subdirectory(texture-to-image)
-add_subdirectory(texture-particles-blending)
-add_subdirectory(texture-npatch-drawing)
-add_subdirectory(texture-background-scrolling)
-add_subdirectory(texture-sprite-button)
-add_subdirectory(texture-sprite-explosion)
-add_subdirectory(text-raylib-fonts)
-add_subdirectory(text-font-spritefont)
-add_subdirectory(text-font-loading)
-add_subdirectory(text-font-filters)
-add_subdirectory(text-font-sdf)
-add_subdirectory(text-format-text)
-add_subdirectory(text-input-box)
-add_subdirectory(text-writing-anim)
-add_subdirectory(text-rectangle-bounds)
-add_subdirectory(text-unicode)
-add_subdirectory(rayfork-single-header)
-add_subdirectory(rayfork-single-header-and-source)
-add_subdirectory(rayfork-es)
-add_subdirectory(simple-glfw)
+# Setup unit-tests
+add_executable(unit-test-suite)
+target_sources(unit-test-suite PRIVATE unit-tests/tests.cpp)
+target_link_libraries(unit-test-suite PRIVATE rayfork)
+target_compile_features(unit-test-suite PUBLIC cxx_std_17)
+set_target_properties(unit-test-suite PROPERTIES
+        CXX_STANDARD 17
+        CXX_STANDARD_REQUIRED YES
+        CXX_EXTENSIONS NO
+)
+target_include_directories(unit-test-suite PRIVATE "libs")

@@ -210,7 +210,7 @@
             "target": 34962
         }
     ],
-    "buffers": [
+    "vertex_buffers": [
         {
             "byteLength": 102040,
             "uri": "Duck0.bin"

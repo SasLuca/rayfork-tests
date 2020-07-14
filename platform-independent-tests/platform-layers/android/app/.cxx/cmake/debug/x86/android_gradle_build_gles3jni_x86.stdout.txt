@@ -1,0 +1,2 @@
+ninja: Entering directory `C:\documents\projects\rayfork\rayfork-examples\android-platform-layer\app\.cxx\cmake\debug\x86'
+ninja: no work to do.

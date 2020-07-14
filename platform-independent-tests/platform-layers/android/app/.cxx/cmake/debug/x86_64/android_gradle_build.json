@@ -1,0 +1,43 @@
+{
+  "stringTable": {
+    "0": "C:/documents/projects/rayfork/rayfork-examples/android-platform-layer/app/.cxx/cmake/debug/x86_64",
+    "1": "--target=x86_64-none-linux-android24 --gcc-toolchain=C:/Users/LucaSas/AppData/Local/Android/Sdk/ndk/21.2.6472646/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Users/LucaSas/AppData/Local/Android/Sdk/ndk/21.2.6472646/toolchains/llvm/prebuilt/windows-x86_64/sysroot -Dgles3jni_EXPORTS -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -O0 -fno-limit-debug-info -fPIC -fstack-protector"
+  },
+  "buildFiles": [
+    "C:\\Users\\LucaSas\\AppData\\Local\\Android\\Sdk\\ndk\\21.2.6472646\\build\\cmake\\android.toolchain.cmake",
+    "C:\\documents\\projects\\rayfork\\rayfork-examples\\android-platform-layer\\app\\src\\main\\cpp\\CMakeLists.txt",
+    "C:\\Users\\LucaSas\\AppData\\Local\\Android\\Sdk\\ndk\\21.2.6472646\\build\\cmake\\platforms.cmake"
+  ],
+  "cleanCommands": [
+    "C:\\Users\\LucaSas\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"C:\\documents\\projects\\rayfork\\rayfork-examples\\android-platform-layer\\app\\.cxx\\cmake\\debug\\x86_64\" clean"
+  ],
+  "buildTargetsCommand": "C:\\Users\\LucaSas\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe  -C \"C:\\documents\\projects\\rayfork\\rayfork-examples\\android-platform-layer\\app\\.cxx\\cmake\\debug\\x86_64\" {LIST_OF_TARGETS_TO_BUILD}",
+  "libraries": {
+    "gles3jni-Debug-x86_64": {
+      "buildCommand": "C:\\Users\\LucaSas\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"C:\\documents\\projects\\rayfork\\rayfork-examples\\android-platform-layer\\app\\.cxx\\cmake\\debug\\x86_64\" gles3jni",
+      "buildType": "debug",
+      "toolchain": "3758368106",
+      "abi": "x86_64",
+      "artifactName": "gles3jni",
+      "files": [
+        {
+          "src": "C:\\documents\\projects\\rayfork\\rayfork-examples\\android-platform-layer\\app\\src\\main\\cpp\\gles3jni.c",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        }
+      ],
+      "headers": [],
+      "output": "C:\\documents\\projects\\rayfork\\rayfork-examples\\android-platform-layer\\app\\build\\intermediates\\cmake\\debug\\obj\\x86_64\\libgles3jni.so",
+      "runtimeFiles": []
+    }
+  },
+  "toolchains": {
+    "3758368106": {
+      "cCompilerExecutable": "C:\\Users\\LucaSas\\AppData\\Local\\Android\\Sdk\\ndk\\21.2.6472646\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang.exe"
+    }
+  },
+  "cFileExtensions": [
+    "c"
+  ],
+  "cppFileExtensions": []
+}

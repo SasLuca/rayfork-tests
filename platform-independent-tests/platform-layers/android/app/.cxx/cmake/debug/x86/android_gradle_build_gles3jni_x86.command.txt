@@ -1,0 +1,7 @@
+Executable : C:\Users\LucaSas\AppData\Local\Android\Sdk\cmake\3.10.2.4988404\bin\ninja.exe
+arguments : 
+-C
+C:\documents\projects\rayfork\rayfork-examples\android-platform-layer\app\.cxx\cmake\debug\x86
+gles3jni
+jvmArgs : 
+
