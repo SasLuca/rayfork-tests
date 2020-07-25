@@ -2,7 +2,7 @@
 
 #define SOKOL_IMPL
 #include "sokol_time.h"
-#include "rayfork.h"
+#include "include/rayfork.h"
 #include "glad/glad.h"
 #include "game.h"
 

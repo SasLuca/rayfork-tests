@@ -1,5 +1,6 @@
-#include "rayfork.h"
 #include "platform.h"
+
+const char* window_title = "rayfork - collision area";
 
 int screen_width  = 800;
 int screen_height = 450;
@@ -26,9 +27,11 @@ bool pause;
 // Collision detection
 bool collision;
 
-extern void on_init(rf_gfx_backend_init_data* gfx_data)
+extern void game_init(rf_gfx_backend_data* gfx_data)
 {
-    rf_init(&ctx, screen_width, screen_height, gfx_data);
+    rf_init_context(&ctx);
+    rf_init_gfx(screen_width, screen_height, gfx_data);
+
     batch = rf_create_default_render_batch(RF_DEFAULT_ALLOCATOR);
     rf_set_active_render_batch(&batch);
 
@@ -36,13 +39,18 @@ extern void on_init(rf_gfx_backend_init_data* gfx_data)
     box_b = (rf_rec) { (float) screen_width / 2 - 30, (float) screen_height / 2 - 30, 60, 60 };
 }
 
-extern void on_frame(const input_t* input)
+extern void game_update(const input_t* input)
 {
+    if (input->any_key_pressed) { pause = !pause; }
+
     // Move box if not paused
-    if (!pause) box_a.x += box_a_speed_x;
+    if (!pause) { box_a.x += box_a_speed_x; }
 
     // Bounce box on x screen limits
-    if (((box_a.x + box_a.width) >= screen_width) || (box_a.x <= 0)) box_a_speed_x *= -1;
+    if (((box_a.x + box_a.width) >= screen_width) || (box_a.x <= 0))
+    {
+        box_a_speed_x *= -1;
+    }
 
     // Update player-controlled-box (box02)
     box_b.x = input->mouse_x - box_b.width  / 2;
@@ -89,21 +97,10 @@ extern void on_frame(const input_t* input)
     rf_end();
 }
 
-void on_event(const sapp_event* event)
+extern void game_window_resize(int width, int height)
 {
-    switch (event->type)
-    {
-        case SAPP_EVENTTYPE_MOUSE_MOVE:
-            mouse_x = event->mouse_x;
-            mouse_y = event->mouse_y;
-            break;
-            
-        case SAPP_EVENTTYPE_KEY_DOWN:
-            pause = !pause;
+    screen_width  = width;
+    screen_height = height;
 
-        default:
-            break;
-    }
+    rf_set_viewport(screen_width, screen_height);
 }
-
-extern void on_resize(int w, int h) { /*unused*/ }

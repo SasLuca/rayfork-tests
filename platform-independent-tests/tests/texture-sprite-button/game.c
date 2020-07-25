@@ -1,6 +1,6 @@
 // Implementation of the sprite button example from raylib using rayfork
 #include "game.h"
-#include "rayfork.h"
+#include "include/rayfork.h"
 #include "glad.h"
 
 #define NUM_FRAMES 3 // Number of frames (rectangles) for the button sprite texture

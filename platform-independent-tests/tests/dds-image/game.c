@@ -1,6 +1,6 @@
 // Implementation dds images in Rayfork
 
-#include "rayfork.h"
+#include "include/rayfork.h"
 #include "glad.h"
 #include "sokol_app.h"
 #include "malloc.h"

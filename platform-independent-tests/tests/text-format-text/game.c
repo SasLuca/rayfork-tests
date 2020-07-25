@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 #include "game.h"
-#include "rayfork.h"
+#include "include/rayfork.h"
 #include "glad.h"
 
 rf_context rf_ctx;

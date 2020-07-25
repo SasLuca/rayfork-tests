@@ -1,7 +1,7 @@
 //Implementation of the texture rectangle example from raylib using rayfork
 
 #include "game.h"
-#include "rayfork.h"
+#include "include/rayfork.h"
 #include "glad.h"
 #include <stdio.h>
 

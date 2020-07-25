@@ -5,7 +5,7 @@
 #define SOKOL_WIN32_NO_GL_LOADER
 #define SOKOL_WIN32_FORCE_MAIN
 #include "sokol_app.h"
-#include "rayfork.h"
+#include "include/rayfork.h"
 #include "glad.h"
 #include "malloc.h"
 

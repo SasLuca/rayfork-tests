@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include "game.h"
-#include "rayfork.h"
+#include "include/rayfork.h"
 #include "glad.h"
 
 #define MAX_PARTICLES 200

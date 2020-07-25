@@ -1,7 +1,7 @@
 //Implementation of the raylib fonts example from raylib using rayfork
 
 #include "game.h"
-#include "rayfork.h"
+#include "include/rayfork.h"
 #include "glad.h"
 
 #define MAX_FONTS (8)

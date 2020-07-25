@@ -1,4 +1,6 @@
-#include "rayfork.h"
+#include "platform.h"
+
+const char* window_title = "rayfork - basic shapes";
 
 int screen_width = 800;
 int screen_height = 450;
@@ -6,14 +8,16 @@ int screen_height = 450;
 rf_context ctx;
 rf_render_batch batch;
 
-extern void on_init(rf_gfx_backend_init_data* gfx_data)
+extern void game_init(rf_gfx_backend_data* gfx_data)
 {
-    rf_init(&ctx, screen_width, screen_height, gfx_data);
+    rf_init_context(&ctx);
+    rf_init_gfx(screen_width, screen_height, gfx_data);
+
     batch = rf_create_default_render_batch(RF_DEFAULT_ALLOCATOR);
     rf_set_active_render_batch(&batch);
 }
 
-extern void on_frame(void)
+extern void game_update(const input_t* input)
 {
     rf_begin();
     {
@@ -52,4 +56,10 @@ extern void on_frame(void)
     rf_end();
 }
 
-extern void on_resize(int w, int h) {}
+extern void game_window_resize(int width, int height)
+{
+    screen_width  = width;
+    screen_height = height;
+
+    rf_set_viewport(screen_width, screen_height);
+}

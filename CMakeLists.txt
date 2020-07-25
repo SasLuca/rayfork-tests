@@ -6,18 +6,27 @@ if (NOT DEFINED ASSETS_PATH)
 	add_compile_definitions(ASSETS_PATH="${CMAKE_CURRENT_SOURCE_DIR}/assets/")
 endif()
 
-# Set path variables
-set(rayfork_path "${CMAKE_SOURCE_DIR}/source/")
-set(platform_header_path "${CMAKE_SOURCE_DIR}/tests/platform-independent-tests/platform-layers/")
+set(platform_header_path "${CMAKE_CURRENT_SOURCE_DIR}/platform-independent-tests/platform-layers/")
 
-# Add sokol examples
-add_subdirectory(platform-independent-tests/platform-layers/sokol)       # Add the sokol platform layer
-file(GLOB files "platform-independent-tests/tests/*.c")                  # Create an iterable with all the filenames in examples/
-foreach(file ${files})                                                   # Iterate over all files
-	get_filename_component(name ${file} NAME_WE)                         # Create a variable `name` that stores the filename without the extension. NAME_WE means filename with extension. (https://cmake.org/cmake/help/v3.0/command/get_filename_component.html).
-	add_executable(${name})                                     		 # Create the target for the specific example
-	target_sources(${name} PRIVATE ${file})				    			 # Add sources to target
-	target_link_libraries(${name} PRIVATE sokol-platform-layer rayfork)  # Link with the platform layer and rayfork
+# Choose platform layer
+if (RAYFORK_TESTS_PLATFORM_LAYER_SOKOL)
+	add_subdirectory(platform-independent-tests/platform-layers/sokol)
+	set(platform-layer sokol-platform-layer)
+elseif(RAYFORK_TESTS_PLATFORM_LAYER_GLFW)
+	add_subdirectory(platform-independent-tests/platform-layers/glfw)
+	set(platform-layer glfw-platform-layer)
+elseif(RAYFORK_TESTS_PLATFORM_LAYER_SDL)
+	add_subdirectory(platform-independent-tests/platform-layers/sdl)
+	set(platform-layer sdl-platform-layer)
+endif()
+
+# Load examples
+file(GLOB files "platform-independent-tests/tests/*.c")              # Create an iterable with all the filenames in examples/
+foreach(file ${files})                                               # Iterate over all files
+	get_filename_component(name ${file} NAME_WE)                     # Create a variable `name` that stores the filename without the extension. NAME_WE means filename with extension. (https://cmake.org/cmake/help/v3.0/command/get_filename_component.html).
+	add_executable(${name})                                          # Create the target for the specific example
+	target_sources(${name} PRIVATE ${file})				    	     # Add sources to target
+	target_link_libraries(${name} PRIVATE ${platform-layer} rayfork) # Link with the platform layer and rayfork
 	target_include_directories(${name} PUBLIC platform-independent-tests/platform-layers/) # Add platform.h to the include path
 endforeach()
 

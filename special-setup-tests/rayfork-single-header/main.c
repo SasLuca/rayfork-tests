@@ -6,7 +6,7 @@
 #define SOKOL_WIN32_FORCE_MAIN
 #define RAYFORK_IMPLEMENTATION
 #include "sokol_app.h"
-#include "rayfork.h"
+#include "include/rayfork.h"
 #include "glad.h"
 #include "malloc.h"
 

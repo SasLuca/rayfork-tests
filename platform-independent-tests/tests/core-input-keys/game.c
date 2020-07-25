@@ -1,6 +1,6 @@
 //Implementation of the input keys example from raylib using rayfork
 
-#include "rayfork.h"
+#include "include/rayfork.h"
 #include "glad/glad.h"
 #include "game.h"
 

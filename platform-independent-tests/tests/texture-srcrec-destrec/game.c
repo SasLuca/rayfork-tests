@@ -1,7 +1,7 @@
 //Implementation of the texture srcrec destrec example from raylib using rayfork
 
 #include "game.h"
-#include "rayfork.h"
+#include "include/rayfork.h"
 #include "glad.h"
 
 rf_context rf_ctx;
