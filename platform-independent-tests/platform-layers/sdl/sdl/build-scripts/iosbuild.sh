@@ -11,9 +11,7 @@ fi
 SRC_DIR=$(cd `dirname $0`/..; pwd)
 if [ "$PWD" = "$SRC_DIR" ]; then
     PREFIX=$SRC_DIR/ios-build
-    if [ ! -d "$PREFIX" ]; then
-        mkdir $PREFIX
-    fi
+    mkdir $PREFIX
 else
     PREFIX=$PWD
 fi
@@ -89,7 +87,7 @@ then
         cd ${PREFIX}
         make clean
         ../configure --build=x86_64-apple-${DARWIN} --host=i386-ios-${DARWIN} --disable-shared --prefix=${PREFIX}/platform/i386-sim "CC=${CC}" "CFLAGS=${CFLAGS} -mios-simulator-version-min=${MIN_SDK_VERSION} -arch i386 -isysroot ${IPHONESIMULATOR_SYSROOT}" "CXX=${CXX}" "CXXFLAGS=${CXXFLAGS} -mios-simulator-version-min=${MIN_SDK_VERSION} -arch i386 -isysroot ${IPHONESIMULATOR_SYSROOT}" LDFLAGS="-arch i386 -mios-simulator-version-min=${MIN_SDK_VERSION} ${LDFLAGS} -L${IPHONESIMULATOR_SYSROOT}/usr/lib/ -L${IPHONESIMULATOR_SYSROOT}/usr/lib/system" || exit 2
-        cp $SRC_DIR/include/SDL_config_iphoneos.h include/SDL_config.h
+	cp $SRC_DIR/include/SDL_config_iphoneos.h include/SDL_config.h
         make -j10 || exit 3
         make install
     ) || exit $?
@@ -107,7 +105,7 @@ then
         cd ${PREFIX}
         make clean
         ../configure --build=x86_64-apple-${DARWIN} --host=x86_64-ios-${DARWIN} --disable-shared --prefix=${PREFIX}/platform/x86_64-sim "CC=${CC}" "CFLAGS=${CFLAGS} -mios-simulator-version-min=${MIN_SDK_VERSION} -arch x86_64 -isysroot ${IPHONESIMULATOR_SYSROOT}" "CXX=${CXX}" "CXXFLAGS=${CXXFLAGS} -mios-simulator-version-min=${MIN_SDK_VERSION} -arch x86_64 -isysroot ${IPHONESIMULATOR_SYSROOT}" LDFLAGS="-arch x86_64 -mios-simulator-version-min=${MIN_SDK_VERSION} ${LDFLAGS} -L${IPHONESIMULATOR_SYSROOT}/usr/lib/ -L${IPHONESIMULATOR_SYSROOT}/usr/lib/system" || exit 2
-        cp $SRC_DIR/include/SDL_config_iphoneos.h include/SDL_config.h
+	cp $SRC_DIR/include/SDL_config_iphoneos.h include/SDL_config.h
         make -j$NJOB || exit 3
         make install
     ) || exit $?
@@ -125,7 +123,7 @@ then
         cd ${PREFIX}
         make clean
         ../configure --build=x86_64-apple-${DARWIN} --host=armv7-ios-${DARWIN} --disable-shared --prefix=${PREFIX}/platform/armv7-ios "CC=${CC}" "CFLAGS=${CFLAGS} -miphoneos-version-min=${MIN_SDK_VERSION} -arch armv7 -isysroot ${IPHONEOS_SYSROOT}" "CXX=${CXX}" "CXXFLAGS=${CXXFLAGS} -arch armv7 -isysroot ${IPHONEOS_SYSROOT}" LDFLAGS="-arch armv7 -miphoneos-version-min=${MIN_SDK_VERSION} ${LDFLAGS}" || exit 2
-        cp $SRC_DIR/include/SDL_config_iphoneos.h include/SDL_config.h
+	cp $SRC_DIR/include/SDL_config_iphoneos.h include/SDL_config.h
         make -j$NJOB || exit 3
         make install
     ) || exit $?
@@ -143,7 +141,7 @@ then
         cd ${PREFIX}
         make clean
         ../configure --build=x86_64-apple-${DARWIN} --host=armv7s-ios-${DARWIN} --disable-shared --prefix=${PREFIX}/platform/armv7s-ios "CC=${CC}" "CFLAGS=${CFLAGS} -miphoneos-version-min=${MIN_SDK_VERSION} -arch armv7s -isysroot ${IPHONEOS_SYSROOT}" "CXX=${CXX}" "CXXFLAGS=${CXXFLAGS} -miphoneos-version-min=${MIN_SDK_VERSION} -arch armv7s -isysroot ${IPHONEOS_SYSROOT}" LDFLAGS="-arch armv7s -miphoneos-version-min=${MIN_SDK_VERSION} ${LDFLAGS}" || exit 2
-        cp $SRC_DIR/include/SDL_config_iphoneos.h include/SDL_config.h
+	cp $SRC_DIR/include/SDL_config_iphoneos.h include/SDL_config.h
         make -j$NJOB || exit 3
         make install
     ) || exit $?
@@ -161,7 +159,7 @@ then
         cd ${PREFIX}
         make clean
         ../configure --build=x86_64-apple-${DARWIN} --host=arm-ios-${DARWIN} --disable-shared --prefix=${PREFIX}/platform/arm64-ios "CC=${CC}" "CFLAGS=${CFLAGS} -miphoneos-version-min=${MIN_SDK_VERSION} -arch arm64 -isysroot ${IPHONEOS_SYSROOT}" "CXX=${CXX}" "CXXFLAGS=${CXXFLAGS} -miphoneos-version-min=${MIN_SDK_VERSION} -arch arm64 -isysroot ${IPHONEOS_SYSROOT}" LDFLAGS="-arch arm64 -miphoneos-version-min=${MIN_SDK_VERSION} ${LDFLAGS}" || exit 2
-        cp $SRC_DIR/include/SDL_config_iphoneos.h include/SDL_config.h
+	cp $SRC_DIR/include/SDL_config_iphoneos.h include/SDL_config.h
         make -j$NJOB || exit 3
         make install
     ) || exit $?

@@ -20,9 +20,9 @@ dnl Set various version strings - taken gratefully from the GTk sources
 #
 SDL_MAJOR_VERSION=2
 SDL_MINOR_VERSION=0
-SDL_MICRO_VERSION=13
-SDL_INTERFACE_AGE=1
-SDL_BINARY_AGE=13
+SDL_MICRO_VERSION=12
+SDL_INTERFACE_AGE=0
+SDL_BINARY_AGE=12
 SDL_VERSION=$SDL_MAJOR_VERSION.$SDL_MINOR_VERSION.$SDL_MICRO_VERSION
 
 AC_SUBST(SDL_MAJOR_VERSION)
@@ -34,7 +34,6 @@ AC_SUBST(SDL_VERSION)
 
 # libtool versioning
 LT_INIT([win32-dll])
-LT_LANG([Windows Resource])
 
 LT_RELEASE=$SDL_MAJOR_VERSION.$SDL_MINOR_VERSION
 LT_CURRENT=`expr $SDL_MICRO_VERSION - $SDL_INTERFACE_AGE`
@@ -56,7 +55,7 @@ AC_PROG_CC
 AC_PROG_CXX
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
-AC_LIBTOOL_RC
+AC_CHECK_TOOL(WINDRES, [windres], [:])
 PKG_PROG_PKG_CONFIG
 
 dnl Make sure that srcdir is a full pathname
@@ -70,17 +69,7 @@ case "$host" in
 esac
 
 dnl Set up the compiler and linker flags
-INCLUDE="-I$srcdir/include"
-
-dnl Don't use our khronos headers on QNX.
-case "$host" in
-    *-*-nto-qnx*)
-        ;;
-    *)
-        INCLUDE="$INCLUDE -idirafter $srcdir/src/video/khronos"
-        ;;
-esac
-
+INCLUDE="-I$srcdir/include -idirafter $srcdir/src/video/khronos"
 if test x$srcdir != x.; then
     INCLUDE="-Iinclude $INCLUDE"
 elif test -d .hg; then
@@ -349,7 +338,7 @@ if test x$enable_libc = xyes; then
     AC_CHECK_FUNCS(malloc calloc realloc free getenv setenv putenv unsetenv qsort abs bcopy memset memcpy memmove wcslen wcslcpy wcslcat wcsdup wcsstr wcscmp wcsncmp strlen strlcpy strlcat _strrev _strupr _strlwr strchr strrchr strstr strtok_r itoa _ltoa _uitoa _ultoa strtol strtoul _i64toa _ui64toa strtoll strtoull atoi atof strcmp strncmp _stricmp strcasecmp _strnicmp strncasecmp vsscanf vsnprintf fopen64 fseeko fseeko64 sigaction setjmp nanosleep sysconf sysctlbyname getauxval poll _Exit)
 
     AC_CHECK_LIB(m, pow, [LIBS="$LIBS -lm"; EXTRA_LDFLAGS="$EXTRA_LDFLAGS -lm"])
-    AC_CHECK_FUNCS(acos acosf asin asinf atan atanf atan2 atan2f ceil ceilf copysign copysignf cos cosf exp expf fabs fabsf floor floorf trunc truncf fmod fmodf log logf log10 log10f pow powf scalbn scalbnf sin sinf sqrt sqrtf tan tanf)
+    AC_CHECK_FUNCS(acos acosf asin asinf atan atanf atan2 atan2f ceil ceilf copysign copysignf cos cosf exp expf fabs fabsf floor floorf fmod fmodf log logf log10 log10f pow powf scalbn scalbnf sin sinf sqrt sqrtf tan tanf)
 
     AC_CHECK_LIB(iconv, iconv_open, [LIBS="$LIBS -liconv"; EXTRA_LDFLAGS="$EXTRA_LDFLAGS -liconv"])
     AC_CHECK_FUNCS(iconv)
@@ -423,7 +412,6 @@ SOURCES="$SOURCES $srcdir/src/thread/*.c"
 SOURCES="$SOURCES $srcdir/src/timer/*.c"
 SOURCES="$SOURCES $srcdir/src/video/*.c"
 SOURCES="$SOURCES $srcdir/src/video/yuv2rgb/*.c"
-SOURCES="$SOURCES $srcdir/src/locale/*.c"
 
 dnl Enable/disable various subsystems of the SDL library
 
@@ -1319,8 +1307,8 @@ dnl Check for ARM instruction support using gas syntax
 CheckARM()
 {
     AC_ARG_ENABLE(arm-simd,
-AC_HELP_STRING([--enable-arm-simd], [use SIMD assembly blitters on ARM [[default=no]]]),
-                  enable_arm_simd=$enableval, enable_arm_simd=no)
+AC_HELP_STRING([--enable-arm-simd], [use SIMD assembly blitters on ARM [[default=yes]]]),
+                  enable_arm_simd=$enableval, enable_arm_simd=yes)
     if test x$enable_video = xyes -a x$enable_assembly = xyes -a x$enable_arm_simd = xyes; then
         save_CFLAGS="$CFLAGS"
         have_arm_simd=no
@@ -1344,7 +1332,7 @@ AC_HELP_STRING([--enable-arm-simd], [use SIMD assembly blitters on ARM [[default
         CFLAGS="$save_CFLAGS"
         
         if test x$have_arm_simd = xyes; then
-            AC_DEFINE(SDL_ARM_SIMD_BLITTERS, 1, [ ])
+            AC_DEFINE(SDL_ARM_SIMD_BLITTERS)
 dnl            SOURCES="$SOURCES $srcdir/src/video/arm/pixman-arm-simd*.c"
             SOURCES="$SOURCES $srcdir/src/video/arm/pixman-arm-simd*.S"
             WARN_ABOUT_ARM_SIMD_ASM_MIT="yes"
@@ -1383,7 +1371,7 @@ AC_HELP_STRING([--enable-arm-neon], [use NEON assembly blitters on ARM [[default
         CFLAGS="$save_CFLAGS"
         
         if test x$have_arm_neon = xyes; then
-            AC_DEFINE(SDL_ARM_NEON_BLITTERS, 1, [ ])
+            AC_DEFINE(SDL_ARM_NEON_BLITTERS)
 dnl            SOURCES="$SOURCES $srcdir/src/video/arm/pixman-arm-neon*.c"
             SOURCES="$SOURCES $srcdir/src/video/arm/pixman-arm-neon*.S"
             WARN_ABOUT_ARM_NEON_ASM_MIT="yes"
@@ -1538,7 +1526,7 @@ AS_HELP_STRING([--enable-video-wayland-qt-touch], [QtWayland server support for 
         video_wayland=no
         if  test x$video_opengl_egl = xyes && \
             test x$video_opengles_v2 = xyes; then
-            if $PKG_CONFIG --exists wayland-client wayland-scanner wayland-egl wayland-cursor egl xkbcommon ; then
+            if $PKG_CONFIG --exists wayland-client wayland-scanner wayland-protocols wayland-egl wayland-cursor egl xkbcommon ; then
                 WAYLAND_CFLAGS=`$PKG_CONFIG --cflags wayland-client wayland-egl wayland-cursor xkbcommon`
                 WAYLAND_LIBS=`$PKG_CONFIG --libs wayland-client wayland-egl wayland-cursor xkbcommon`
                 WAYLAND_SCANNER=`$PKG_CONFIG --variable=wayland_scanner wayland-scanner`
@@ -1939,7 +1927,7 @@ int event_type = XI_TouchBegin;
 XITouchClassInfo *t;
                     ],[
                     have_xinput2_multitouch=yes
-                    AC_DEFINE([SDL_VIDEO_DRIVER_X11_XINPUT2_SUPPORTS_MULTITOUCH], 1, [ ])
+                    AC_DEFINE([SDL_VIDEO_DRIVER_X11_XINPUT2_SUPPORTS_MULTITOUCH], 1, [])
                     SUMMARY_video_x11="${SUMMARY_video_x11} xinput2_multitouch"
                     ])
                 AC_MSG_RESULT($have_xinput2_multitouch)
@@ -2157,7 +2145,7 @@ AS_HELP_STRING([--enable-render-metal], [enable the Metal render driver [[defaul
           #import <Metal/Metal.h>
           #import <QuartzCore/CAMetalLayer.h>
 
-          #if TARGET_CPU_X86
+          #if !TARGET_CPU_X86_64
           #error Metal doesn't work on this configuration
           #endif
         ],[
@@ -2572,7 +2560,7 @@ CheckVulkan()
                   #include <Metal/Metal.h>
                   #include <QuartzCore/CAMetalLayer.h>
 
-                  #if TARGET_CPU_X86
+                  #if !TARGET_CPU_X86_64
                   #error Vulkan doesn't work on this configuration
                   #endif
                 ],[
@@ -2741,18 +2729,25 @@ CheckFcitx()
 AS_HELP_STRING([--enable-fcitx], [enable fcitx support [[default=yes]]]),
                   , enable_fcitx=yes)
     if test x$enable_fcitx = xyes; then
-        AC_MSG_CHECKING(for fcitx support)
-        have_fcitx=no
-        if test x$enable_ime != xyes; then
-            AC_MSG_WARN([IME support is required for fcitx.])
-        elif test x$have_dbus_dbus_h_hdr != xyes; then
-            AC_MSG_WARN([DBus support is required for fcitx.])
-        else
-            have_fcitx=yes
-            AC_DEFINE(HAVE_FCITX, 1, [ ])
-            SOURCES="$SOURCES $srcdir/src/core/linux/SDL_fcitx.c"
+        PKG_CHECK_MODULES([FCITX], [fcitx], have_fcitx=yes, have_fcitx=no)
+        CFLAGS="$CFLAGS $FCITX_CFLAGS"
+        AC_CHECK_HEADER(fcitx/frontend.h,
+                        have_fcitx_frontend_h_hdr=yes,
+                        have_fcitx_frontend_h_hdr=no)
+        CFLAGS="$save_CFLAGS"
+        if test x$have_fcitx_frontend_h_hdr = xyes; then
+            if test x$enable_ime != xyes; then
+                AC_MSG_WARN([IME support is required for fcitx.])
+                have_fcitx_frontend_h_hdr=no
+            elif test x$enable_dbus != xyes; then
+                AC_MSG_WARN([DBus support is required for fcitx.])
+                have_fcitx_frontend_h_hdr=no
+            else
+                AC_DEFINE(HAVE_FCITX_FRONTEND_H, 1, [ ])
+                EXTRA_CFLAGS="$EXTRA_CFLAGS $FCITX_CFLAGS"
+                SOURCES="$SOURCES $srcdir/src/core/linux/SDL_fcitx.c"
+            fi
         fi
-        AC_MSG_RESULT($have_fcitx)
     fi
 }
 
@@ -3099,11 +3094,11 @@ XINPUT_STATE_EX s1;
 
     AC_CHECK_HEADER(mmdeviceapi.h, have_wasapi=yes)
     if test x$have_wasapi = xyes; then
-        AC_DEFINE(HAVE_MMDEVICEAPI_H, 1, [ ])
+        AC_DEFINE(HAVE_MMDEVICEAPI_H,1,[])
     fi
     AC_CHECK_HEADER(audioclient.h,,have_wasapi=no)
     if test x$have_wasapi = xyes; then
-        AC_DEFINE(HAVE_AUDIOCLIENT_H, 1, [ ])
+        AC_DEFINE(HAVE_AUDIOCLIENT_H,1,[])
     fi
 
     AC_ARG_ENABLE(wasapi,
@@ -3289,16 +3284,12 @@ CheckHIDAPI()
     # so we'll just use libusb when it's available.
     case "$host" in
         # libusb does not support iOS
-        *-ios-* )
+        arm*-apple-darwin* | *-ios-* )
             skiplibusb=yes
             ;;
         # On the other hand, *BSD specifically uses libusb only
         *-*-*bsd* )
             onlylibusb=yes
-            ;;
-        # RAWINPUT is only available on Win32, but can be enabled if HIDAPI is
-        *-*-cygwin* | *-*-mingw32*)
-            userawinput=yes
             ;;
     esac
 
@@ -3325,9 +3316,6 @@ AS_HELP_STRING([--enable-hidapi], [use HIDAPI for low level joystick drivers [[d
 
         if test x$hidapi_support = xyes; then
             AC_DEFINE(SDL_JOYSTICK_HIDAPI, 1, [ ])
-            if test x$userawinput = xyes; then
-                AC_DEFINE(SDL_JOYSTICK_RAWINPUT, 1, [ ])
-            fi
             EXTRA_CFLAGS="$EXTRA_CFLAGS -I$srcdir/src/hidapi/hidapi"
             SOURCES="$SOURCES $srcdir/src/joystick/hidapi/*.c"
             SOURCES="$SOURCES $srcdir/src/hidapi/SDL_hidapi.c"
@@ -3422,18 +3410,6 @@ AS_HELP_STRING([--enable-foregrounding-signal], [number to use for magic foregro
     fi
 }
 
-dnl Set up the Virtual joystick driver.
-CheckVirtualJoystick()
-{
-    AC_ARG_ENABLE(joystick-virtual,
-AS_HELP_STRING([--enable-joystick-virtual], [enable virtual joystick APIs [[default=yes]]]),
-                  , enable_joystick_virtual=yes)
-    if test x$enable_joystick = xyes -a x$enable_joystick_virtual = xyes; then
-        AC_DEFINE(SDL_JOYSTICK_VIRTUAL, 1, [ ])
-        SOURCES="$SOURCES $srcdir/src/joystick/virtual/*.c"
-        have_joystick_virtual=yes
-    fi
-}
 
 
 dnl Do this on all platforms, before everything else (other things might want to override it).
@@ -3442,8 +3418,6 @@ CheckNoStrictAliasing
 
 dnl Do this for every platform, but for some it doesn't mean anything, but better to catch it here anyhow.
 CheckEventSignals
-
-have_locale=no
 
 dnl Set up the configuration based on the host platform!
 case "$host" in
@@ -3532,9 +3506,6 @@ case "$host" in
         CheckLinuxVersion
         CheckRPATH
         CheckVivanteVideo
-
-        SOURCES="$SOURCES $srcdir/src/locale/unix/*.c"
-        have_locale=yes
 
         # Set up files for the audio library
         if test x$enable_audio = xyes; then
@@ -3685,10 +3656,6 @@ case "$host" in
         # Set up the core platform files
         SOURCES="$SOURCES $srcdir/src/core/windows/*.c"
 
-        # Use the Windows locale APIs.
-        SOURCES="$SOURCES $srcdir/src/locale/windows/*.c"
-        have_locale=yes
-
         # Set up files for the video library
         if test x$enable_video = xyes; then
             AC_DEFINE(SDL_VIDEO_DRIVER_WINDOWS, 1, [ ])
@@ -3751,19 +3718,11 @@ AS_HELP_STRING([--enable-render-d3d], [enable the Direct3D render driver [[defau
                 have_haptic=yes
             fi
         fi
-        # Set up files for the sensor library
-        if test x$enable_sensor = xyes; then
-            AC_DEFINE(SDL_SENSOR_WINDOWS, 1, [ ])
-            SOURCES="$SOURCES $srcdir/src/sensor/windows/*.c"
-            have_sensor=yes
-        fi
-        # Set up files for the power library
         if test x$enable_power = xyes; then
             AC_DEFINE(SDL_POWER_WINDOWS, 1, [ ])
             SOURCES="$SOURCES $srcdir/src/power/windows/SDL_syspower.c"
             have_power=yes
         fi
-        # Set up files for the filesystem library
         if test x$enable_filesystem = xyes; then
             AC_DEFINE(SDL_FILESYSTEM_WINDOWS, 1, [ ])
             SOURCES="$SOURCES $srcdir/src/filesystem/windows/SDL_sysfilesystem.c"
@@ -3860,11 +3819,6 @@ AS_HELP_STRING([--enable-render-d3d], [enable the Direct3D render driver [[defau
             SOURCES="$SOURCES $srcdir/src/filesystem/haiku/*.cc"
             have_filesystem=yes
         fi
-
-        # Set up files for the locale library
-        SOURCES="$SOURCES $srcdir/src/locale/haiku/*.cc"
-        have_locale=yes
-
         # The Haiku platform requires special setup.
         SOURCES="$srcdir/src/main/haiku/*.cc $SOURCES"
         EXTRA_LDFLAGS="$EXTRA_LDFLAGS -lroot -lbe -lmedia -lgame -ldevice -ltextencoding"
@@ -3872,7 +3826,7 @@ AS_HELP_STRING([--enable-render-d3d], [enable the Direct3D render driver [[defau
         #  other spins, like x86-64, use a more standard "libstdc++.so.*"
         AC_CHECK_FILE("/boot/system/lib/libstdc++.r4.so", EXTRA_LDFLAGS="$EXTRA_LDFLAGS -lstdc++.r4", EXTRA_LDFLAGS="$EXTRA_LDFLAGS -lstdc++")
         ;;
-    *-ios-*)
+    arm*-apple-darwin*|*-ios-*)
         ARCH=ios
 
         CheckVisibilityHidden
@@ -3884,10 +3838,6 @@ AS_HELP_STRING([--enable-render-d3d], [enable the Direct3D render driver [[defau
         CheckMETAL
         CheckVulkan
         CheckPTHREAD
-
-        # Set up files for the locale library
-        SOURCES="$SOURCES $srcdir/src/locale/macosx/*.m"
-        have_locale=yes
 
         # Set up files for the audio library
         if test x$enable_audio = xyes; then
@@ -3902,9 +3852,6 @@ AS_HELP_STRING([--enable-render-d3d], [enable the Direct3D render driver [[defau
             SOURCES="$SOURCES $srcdir/src/joystick/iphoneos/*.m"
             SOURCES="$SOURCES $srcdir/src/joystick/steam/*.c"
             have_joystick=yes
-        else
-            # Need this code for accelerometer as joystick support
-            SOURCES="$SOURCES $srcdir/src/joystick/iphoneos/*.m"
         fi
         # Set up files for the haptic library
         #if test x$enable_haptic = xyes; then
@@ -3990,10 +3937,6 @@ AS_HELP_STRING([--enable-render-d3d], [enable the Direct3D render driver [[defau
         CheckVulkan
         CheckPTHREAD
         CheckHIDAPI
-
-        # Set up files for the locale library
-        SOURCES="$SOURCES $srcdir/src/locale/macosx/*.m"
-        have_locale=yes
 
         # Set up files for the audio library
         if test x$enable_audio = xyes; then
@@ -4122,9 +4065,6 @@ AS_HELP_STRING([--enable-render-d3d], [enable the Direct3D render driver [[defau
             SOURCES="$SOURCES $srcdir/src/timer/unix/*.c"
             have_timers=yes
         fi
-        # Set up files for the locale library
-        SOURCES="$SOURCES $srcdir/src/locale/emscripten/*.c"
-        have_locale=yes
         ;;
     *-*-riscos*)
         ARCH=riscos
@@ -4152,9 +4092,6 @@ AS_HELP_STRING([--enable-render-d3d], [enable the Direct3D render driver [[defau
         ;;
 esac
 
-dnl Permit use of virtual joystick APIs on any platform (subject to configure options)
-CheckVirtualJoystick
-
 # Check whether to install sdl2-config
 AC_MSG_CHECKING(whether to install sdl2-config)
 AC_ARG_ENABLE([sdl2-config],
@@ -4173,9 +4110,6 @@ AC_SUBST([INSTALL_SDL2_CONFIG], [$enable_sdl2_config])
 
 # Verify that we have all the platform specific files we need
 
-if test x$have_locale != xyes; then
-    SOURCES="$SOURCES $srcdir/src/locale/dummy/*.c"
-fi
 if test x$have_joystick != xyes; then
     if test x$enable_joystick = xyes; then
         AC_DEFINE(SDL_JOYSTICK_DUMMY, 1, [ ])
@@ -4260,10 +4194,10 @@ GEN_OBJECTS=`echo "$GEN_SOURCES" | sed 's,[[^ ]]*/\([[^ ]]*\)\.c,$(objects)/\1.l
 
 VERSION_OBJECTS=`echo $VERSION_SOURCES`
 VERSION_DEPENDS=`echo $VERSION_SOURCES`
-VERSION_OBJECTS=`echo "$VERSION_OBJECTS" | sed 's,[[^ ]]*/\([[^ ]]*\)\.rc,$(objects)/\1.lo,g'`
+VERSION_OBJECTS=`echo "$VERSION_OBJECTS" | sed 's,[[^ ]]*/\([[^ ]]*\)\.rc,$(objects)/\1.o,g'`
 VERSION_DEPENDS=`echo "$VERSION_DEPENDS" | sed "s,\\([[^ ]]*\\)/\\([[^ ]]*\\)\\.rc,\\\\
-\\$(objects)/\\2.lo: \\1/\\2.rc \\$(objects)/.created\\\\
-	\\$(RUN_CMD_RC)\\$(LIBTOOL) --mode=compile --tag=RC \\$(RC) -i \\$< -o \\$@,g"`
+\\$(objects)/\\2.o: \\1/\\2.rc \\$(objects)/.created\\\\
+	\\$(WINDRES) \\$< \\$@,g"`
 
 SDLMAIN_OBJECTS=`echo $SDLMAIN_SOURCES`
 SDLMAIN_DEPENDS=`echo $SDLMAIN_SOURCES`
@@ -4281,7 +4215,7 @@ SDLTEST_DEPENDS=`echo "$SDLTEST_DEPENDS" | sed "s,\\([[^ ]]*\\)/\\([[^ ]]*\\)\\.
 
 # Set runtime shared library paths as needed
 
-if test "x$enable_rpath" = "xyes" -a "x$enable_shared" = "xyes"; then
+if test "x$enable_rpath" = "xyes"; then
   if test $ARCH = bsdi -o $ARCH = freebsd -o $ARCH = linux -o $ARCH = netbsd; then
     SDL_RLD_FLAGS="-Wl,-rpath,\${libdir}"
 
@@ -4305,7 +4239,7 @@ else
   SDL_RLD_FLAGS=""
 fi
 
-SDL_STATIC_LIBS="$EXTRA_LDFLAGS"
+SDL_STATIC_LIBS="$SDL_LIBS $EXTRA_LDFLAGS"
 
 dnl Expand the cflags and libraries needed by apps using SDL
 AC_SUBST(SDL_CFLAGS)
@@ -4313,12 +4247,9 @@ AC_SUBST(SDL_LIBS)
 AC_SUBST(SDL_STATIC_LIBS)
 AC_SUBST(SDL_RLD_FLAGS)
 if test x$enable_shared = xyes; then
-    PKG_CONFIG_LIBS_PRIV="
-Libs.private:"
     ENABLE_SHARED_TRUE=
     ENABLE_SHARED_FALSE="#"
 else
-    PKG_CONFIG_LIBS_PRIV=
     ENABLE_SHARED_TRUE="#"
     ENABLE_SHARED_FALSE=
 fi
@@ -4329,7 +4260,6 @@ else
     ENABLE_STATIC_TRUE="#"
     ENABLE_STATIC_FALSE=
 fi
-AC_SUBST(PKG_CONFIG_LIBS_PRIV)
 AC_SUBST(ENABLE_SHARED_TRUE)
 AC_SUBST(ENABLE_SHARED_FALSE)
 AC_SUBST(ENABLE_STATIC_TRUE)
@@ -4348,6 +4278,7 @@ AC_SUBST(BUILD_CFLAGS)
 AC_SUBST(EXTRA_CFLAGS)
 AC_SUBST(BUILD_LDFLAGS)
 AC_SUBST(EXTRA_LDFLAGS)
+AC_SUBST(WINDRES)
 AC_SUBST(WAYLAND_SCANNER)
 
 cat >Makefile.rules <<__EOF__
@@ -4384,11 +4315,6 @@ if test x$have_x = xyes; then
     SUMMARY="${SUMMARY}X11 libraries   :${SUMMARY_video_x11}\n"
 fi
 SUMMARY="${SUMMARY}Input drivers   :${SUMMARY_input}\n"
-if test x$have_joystick_virtual = xyes; then
-    SUMMARY="${SUMMARY}Enable virtual joystick APIs : YES\n"
-else
-    SUMMARY="${SUMMARY}Enable virtual joystick APIs : NO\n"
-fi
 if test x$have_samplerate_h_hdr = xyes; then
     SUMMARY="${SUMMARY}Using libsamplerate : YES\n"
 else
@@ -4414,7 +4340,7 @@ if test x$have_ibus_ibus_h_hdr = xyes; then
 else
     SUMMARY="${SUMMARY}Using ibus          : NO\n"
 fi
-if test x$have_fcitx = xyes; then
+if test x$have_fcitx_frontend_h_hdr = xyes; then
     SUMMARY="${SUMMARY}Using fcitx         : YES\n"
 else
     SUMMARY="${SUMMARY}Using fcitx         : NO\n"

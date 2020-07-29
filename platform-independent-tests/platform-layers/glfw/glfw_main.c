@@ -77,6 +77,9 @@ int main()
 
     while (!glfwWindowShouldClose(window))
     {
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+
         game_update(&input_state);
 
         for (int i = 0; i < sizeof(input_state.keys) / sizeof(key_t); i++)
@@ -99,8 +102,5 @@ int main()
         if (input_state.left_mouse_btn  == BTN_PRESSED_DOWN) input_state.left_mouse_btn  = BTN_HOLD_DOWN;
         if (input_state.right_mouse_btn == BTN_RELEASE)      input_state.right_mouse_btn = BTN_DEFAULT_STATE;
         if (input_state.right_mouse_btn == BTN_PRESSED_DOWN) input_state.right_mouse_btn = BTN_HOLD_DOWN;
-
-        glfwSwapBuffers(window);
-        glfwPollEvents();
     }
 }

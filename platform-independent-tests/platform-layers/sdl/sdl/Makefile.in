@@ -28,7 +28,7 @@ LIBTOOL = @LIBTOOL@
 INSTALL = @INSTALL@
 AR	= @AR@
 RANLIB	= @RANLIB@
-RC	= @RC@
+WINDRES	= @WINDRES@
 
 TARGET  = libSDL2.la
 OBJECTS = @OBJECTS@
@@ -55,7 +55,6 @@ RUN_CMD_CC     = @echo "  CC    " $@;
 RUN_CMD_CXX    = @echo "  CXX   " $@;
 RUN_CMD_LTLINK = @echo "  LTLINK" $@;
 RUN_CMD_RANLIB = @echo "  RANLIB" $@;
-RUN_CMD_RC     = @echo "  RC    " $@;
 RUN_CMD_GEN    = @echo "  GEN   " $@;
 LIBTOOL += --quiet
 endif
@@ -82,7 +81,6 @@ HDRS = \
 	SDL_keyboard.h \
 	SDL_keycode.h \
 	SDL_loadso.h \
-	SDL_locale.h \
 	SDL_log.h \
 	SDL_main.h \
 	SDL_messagebox.h \

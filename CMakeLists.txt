@@ -6,17 +6,17 @@ if (NOT DEFINED ASSETS_PATH)
 	add_compile_definitions(ASSETS_PATH="${CMAKE_CURRENT_SOURCE_DIR}/assets/")
 endif()
 
-set(platform_header_path "${CMAKE_CURRENT_SOURCE_DIR}/platform-independent-tests/platform-layers/")
+add_subdirectory(platform-independent-tests/platform-layers/common-platform-interface)
+add_subdirectory(platform-independent-tests/platform-layers/sokol)
+add_subdirectory(platform-independent-tests/platform-layers/glfw)
+add_subdirectory(platform-independent-tests/platform-layers/sdl)
 
 # Choose platform layer
 if (RAYFORK_TESTS_PLATFORM_LAYER_SOKOL)
-	add_subdirectory(platform-independent-tests/platform-layers/sokol)
 	set(platform-layer sokol-platform-layer)
 elseif(RAYFORK_TESTS_PLATFORM_LAYER_GLFW)
-	add_subdirectory(platform-independent-tests/platform-layers/glfw)
 	set(platform-layer glfw-platform-layer)
 elseif(RAYFORK_TESTS_PLATFORM_LAYER_SDL)
-	add_subdirectory(platform-independent-tests/platform-layers/sdl)
 	set(platform-layer sdl-platform-layer)
 endif()
 
