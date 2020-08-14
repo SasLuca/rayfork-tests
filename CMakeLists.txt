@@ -6,19 +6,20 @@ if (NOT DEFINED ASSETS_PATH)
 	add_compile_definitions(ASSETS_PATH="${CMAKE_CURRENT_SOURCE_DIR}/assets/")
 endif()
 
+# Add platform layers
 add_subdirectory(platform-independent-tests/platform-layers/common-platform-interface)
 add_subdirectory(platform-independent-tests/platform-layers/sokol)
 add_subdirectory(platform-independent-tests/platform-layers/glfw)
 add_subdirectory(platform-independent-tests/platform-layers/sdl)
 
-# Choose platform layer
+# Choose a platform layer
 if (RAYFORK_TESTS_PLATFORM_LAYER_SOKOL)
 	set(platform-layer sokol-platform-layer)
 elseif(RAYFORK_TESTS_PLATFORM_LAYER_GLFW)
 	set(platform-layer glfw-platform-layer)
 elseif(RAYFORK_TESTS_PLATFORM_LAYER_SDL)
 	set(platform-layer sdl-platform-layer)
-else()
+else() # Choose sokol as the default
 	message("No platform layer selected for the testing suite. Picking SOKOL as the defualt.")
 	set(platform-layer sokol-platform-layer)
 endif()

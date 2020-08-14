@@ -23,7 +23,7 @@ extern void game_update(const input_t* input)
     {
         rf_clear(RF_RAYWHITE);
 
-        rf_draw_text("ome basic shapes available on rayfork", 20, 20, 20, RF_DARKGRAY);
+        rf_draw_text("Some basic shapes available on rayfork", 20, 20, 20, RF_DARKGRAY);
 
         rf_draw_circle(screen_width / 4, 120, 35, RF_DARKBLUE);
 
