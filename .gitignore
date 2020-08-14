@@ -1,7 +1,20 @@
-.vs/
-.vscode/
-.idea/
-bin/
-cmake-build-debug/
-out/
-build/
+# Exclude everything
+*
+
+# Except
+!CMakeLists.txt
+
+!.gitignore
+!.gitmodules
+
+!assets/
+!libs/
+!platform-independent-tests/
+!special-setup-tests/
+!unit-tests/
+
+!assets/**
+!libs/**
+!platform-independent-tests/**
+!special-setup-tests/**
+!unit-tests/**

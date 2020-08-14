@@ -18,6 +18,9 @@ elseif(RAYFORK_TESTS_PLATFORM_LAYER_GLFW)
 	set(platform-layer glfw-platform-layer)
 elseif(RAYFORK_TESTS_PLATFORM_LAYER_SDL)
 	set(platform-layer sdl-platform-layer)
+else()
+	message("No platform layer selected for the testing suite. Picking SOKOL as the defualt.")
+	set(platform-layer sokol-platform-layer)
 endif()
 
 # Load examples
