@@ -15,8 +15,6 @@ extern void game_init(rf_gfx_backend_data* gfx_data)
 
     batch = rf_create_default_render_batch(RF_DEFAULT_ALLOCATOR);
     rf_set_active_render_batch(&batch);
-
-    rf_image image = rf_load_image_from_file_ez("path");
 }
 
 extern void game_update(const input_t* input)
